@@ -41,6 +41,6 @@ public class SimpleIf {
      * TO DO: Write an if statement to determine which average is larger and
      * return that value.
      */
-    return (avg1 > avg2)?  avg1 : avg2;
+    return (avg1 > avg2) ? avg1 : avg2;
   }
 }

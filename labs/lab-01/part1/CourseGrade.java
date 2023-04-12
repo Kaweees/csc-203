@@ -12,7 +12,7 @@ public class CourseGrade {
    * scores.
    * 
    * @param courseName The name of the course
-   * @param score The score in the course
+   * @param score      The score in the course
    */
   public CourseGrade(String courseName, int score) {
     this.courseName = courseName;

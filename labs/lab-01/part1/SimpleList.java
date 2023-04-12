@@ -31,6 +31,6 @@ public class SimpleList {
       highScores.add(score > threshold);
     }
     return highScores;
-    
+
   }
 }
