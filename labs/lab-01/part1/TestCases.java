@@ -12,6 +12,8 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import part2.Applicant;
+
 public class TestCases {
   private final static double DELTA = 0.0001;
 
@@ -26,7 +28,18 @@ public class TestCases {
 
   @Test
   public void testAnalyzeApplicant2() {
-    assertFalse(SimpleIf.analyzeApplicant(15, 90));
+    List<CourseGrade> grades1 = Arrays.asList(new CourseGrade("Intro to CS", 100),
+        new CourseGrade("Data Structures", 95), new CourseGrade("Algorithms", 91),
+        new CourseGrade("Computer Organization", 91), new CourseGrade("Operating Systems", 75),
+        new CourseGrade("Non-CS", 83));
+    Applicant testApplicant1 = new Applicant("Hank Schrader", grades1, 5);
+    List<CourseGrade> grades2 = Arrays.asList(new CourseGrade("Intro to CS", 100),
+        new CourseGrade("Data Structures", 95), new CourseGrade("Algorithms", 91),
+        new CourseGrade("Computer Organization", 91), new CourseGrade("Operating Systems", 69),
+        new CourseGrade("Non-CS", 83));
+    Applicant testApplicant2 = new Applicant("Walter White", grades2, 0);
+    assertEquals(SimpleIf.analyzeApplicant2(testApplicant1), true);
+    assertEquals(SimpleIf.analyzeApplicant2(testApplicant2), false);
   }
 
   @Test

@@ -24,8 +24,39 @@ public class TestCases {
         new CourseGrade("Data Structures", 95), new CourseGrade("Algorithms", 91),
         new CourseGrade("Computer Organization", 91), new CourseGrade("Operating Systems", 75),
         new CourseGrade("Non-CS", 83));
-    Applicant testApplicant = new Applicant("Aakash", grades);
+    Applicant testApplicant = new Applicant("Aakash", grades, 5);
     assertEquals("Aakash", testApplicant.getName());
+  }
+
+  @Test
+  public void testGetGrades() {
+    List<CourseGrade> grades = Arrays.asList(new CourseGrade("Intro to CS", 100),
+        new CourseGrade("Data Structures", 95), new CourseGrade("Algorithms", 91),
+        new CourseGrade("Computer Organization", 91), new CourseGrade("Operating Systems", 75),
+        new CourseGrade("Non-CS", 83));
+    Applicant testApplicant = new Applicant("Aakash", grades, 5);
+    assertEquals(grades, testApplicant.getGrades());
+  }
+
+  @Test
+  public void testGetGradeFor() {
+    List<CourseGrade> grades = Arrays.asList(new CourseGrade("Intro to CS", 100),
+        new CourseGrade("Data Structures", 95), new CourseGrade("Algorithms", 91),
+        new CourseGrade("Computer Organization", 91), new CourseGrade("Operating Systems", 75),
+        new CourseGrade("Non-CS", 83));
+    Applicant testApplicant = new Applicant("Aakash", grades, 5);
+    CourseGrade classGrade = testApplicant.getGradeFor("Data Structures");
+    assertEquals(95, classGrade.getScore());
+  }
+
+  @Test
+  public void testGetExpYrs() {
+    List<CourseGrade> grades = Arrays.asList(new CourseGrade("Intro to CS", 100),
+        new CourseGrade("Data Structures", 95), new CourseGrade("Algorithms", 91),
+        new CourseGrade("Computer Organization", 91), new CourseGrade("Operating Systems", 75),
+        new CourseGrade("Non-CS", 83));
+    Applicant testApplicant = new Applicant("Aakash", grades, 5);
+    assertEquals(5, testApplicant.getExpYrs());
   }
 
   /*

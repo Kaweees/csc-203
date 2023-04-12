@@ -18,14 +18,20 @@ public class SimpleIf {
      * TO DO: Write an if statement to determine if the avg is larger than the
      * threshold and return true if so, false otherwise
      */
-    if (avg > threshold) {
-      return true;
-    }
-    return false; // A bit pessimistic!
+    return (avg > threshold) ? true : false;
   }
 
   public static boolean analyzeApplicant2(Applicant applicant) {
-    return false;
+    /*
+     * I approached this problem from the perspective of a startup. At a
+     * startup, time is of the essence, and onboarding for a new employee should
+     * be as short as possible. Therefore, a candidate is more desirable if they
+     * already have experience with the technologies they will be using if
+     * hired. This can be determined by checking if expYrs > 2. If so, the
+     * candidate is more desirable, and they will be filtered based on being
+     * desirable or not.
+     */
+    return (applicant.getExpYrs() > 2);
   }
 
   /**
