@@ -27,6 +27,10 @@ public class SimpleList {
      * acceptability of the scores based on the threshold and place the result
      * into into the output list. Use a FOR-EACH loop.
      */
+    for (int score : scores) {
+      highScores.add(score > threshold);
+    }
     return highScores;
+    
   }
 }

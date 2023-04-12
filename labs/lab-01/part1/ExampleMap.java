@@ -22,10 +22,20 @@ public class ExampleMap {
      * Build a list of the names of applicants who have scores strictly greater
      * than the given threshold.
      */
+
     for (Map.Entry<String, List<CourseGrade>> current : scoresByApplicantName.entrySet()) {
       List<CourseGrade> scores = current.getValue();
+      boolean isHighScoring = true;
+      for (CourseGrade score : scores) {
+        if (score.getScore() <= scoreThreshold) {
+          isHighScoring = false;
+          break;
+        }
+      }
+      if (isHighScoring) {
+        highScoringStudents.add(current.getKey());
+      }
     }
-
     return highScoringStudents;
   }
 }

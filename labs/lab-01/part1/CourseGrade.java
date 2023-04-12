@@ -11,8 +11,8 @@ public class CourseGrade {
    * This is a constructor. It creates a new CourseGrade with the specified
    * scores.
    * 
-   * @param courseName
-   * @param score
+   * @param courseName The name of the course
+   * @param score The score in the course
    */
   public CourseGrade(String courseName, int score) {
     this.courseName = courseName;
