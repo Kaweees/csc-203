@@ -85,72 +85,52 @@ public final class Functions {
   public static final int TREE_HEALTH_MIN = 1;
 
   public static double getAnimationPeriod(Entity entity) {
-    switch (entity.kind) {
-    case DUDE_FULL:
-    case DUDE_NOT_FULL:
-    case OBSTACLE:
-    case FAIRY:
-    case SAPLING:
-    case TREE:
-      return entity.animationPeriod;
-    default:
-      throw new UnsupportedOperationException(String.format("getAnimationPeriod not supported for %s", entity.kind));
-    }
+    return switch (entity.getKind()) {
+    case DUDE_FULL, DUDE_NOT_FULL, OBSTACLE, FAIRY, SAPLING, TREE -> entity.getAnimationPeriod();
+    default -> throw new UnsupportedOperationException(
+        String.format("getAnimationPeriod not supported for %s", entity.getKind()));
+    };
   }
 
   public static void nextImage(Entity entity) {
-    entity.imageIndex = entity.imageIndex + 1;
+    entity.setImageIndex(entity.getImageIndex() + 1);
   }
 
   public static void executeAction(Action action, EventScheduler scheduler) {
-    switch (action.kind) {
-    case ACTIVITY:
-      executeActivityAction(action, scheduler);
-      break;
-
-    case ANIMATION:
-      executeAnimationAction(action, scheduler);
-      break;
+    switch (action.getKind()) {
+    case ACTIVITY -> executeActivityAction(action, scheduler);
+    case ANIMATION -> executeAnimationAction(action, scheduler);
     }
   }
 
   public static void executeAnimationAction(Action action, EventScheduler scheduler) {
-    nextImage(action.entity);
+    nextImage(action.getEntity());
 
-    if (action.repeatCount != 1) {
-      scheduleEvent(scheduler, action.entity, createAnimationAction(action.entity, Math.max(action.repeatCount - 1, 0)),
-          getAnimationPeriod(action.entity));
+    if (action.getRepeatCount() != 1) {
+      scheduleEvent(scheduler, action.getEntity(),
+          createAnimationAction(action.getEntity(), Math.max(action.getRepeatCount() - 1, 0)),
+          getAnimationPeriod(action.getEntity()));
     }
   }
 
   public static void executeActivityAction(Action action, EventScheduler scheduler) {
-    switch (action.entity.kind) {
-    case SAPLING:
-      executeSaplingActivity(action.entity, action.world, action.imageStore, scheduler);
-      break;
-    case TREE:
-      executeTreeActivity(action.entity, action.world, action.imageStore, scheduler);
-      break;
-    case FAIRY:
-      executeFairyActivity(action.entity, action.world, action.imageStore, scheduler);
-      break;
-    case DUDE_NOT_FULL:
-      executeDudeNotFullActivity(action.entity, action.world, action.imageStore, scheduler);
-      break;
-    case DUDE_FULL:
-      executeDudeFullActivity(action.entity, action.world, action.imageStore, scheduler);
-      break;
-    default:
-      throw new UnsupportedOperationException(
-          String.format("executeActivityAction not supported for %s", action.entity.kind));
+    switch (action.getEntity().getKind()) {
+    case SAPLING -> executeSaplingActivity(action.getEntity(), action.getWorld(), action.getImageStore(), scheduler);
+    case TREE -> executeTreeActivity(action.getEntity(), action.getWorld(), action.getImageStore(), scheduler);
+    case FAIRY -> executeFairyActivity(action.getEntity(), action.getWorld(), action.getImageStore(), scheduler);
+    case DUDE_NOT_FULL -> executeDudeNotFullActivity(action.getEntity(), action.getWorld(), action.getImageStore(),
+        scheduler);
+    case DUDE_FULL -> executeDudeFullActivity(action.getEntity(), action.getWorld(), action.getImageStore(), scheduler);
+    default -> throw new UnsupportedOperationException(
+        String.format("executeActivityAction not supported for %s", action.getEntity().getKind()));
     }
   }
 
   public static void executeSaplingActivity(Entity entity, WorldModel world, ImageStore imageStore,
       EventScheduler scheduler) {
-    entity.health++;
+    entity.setHealth(entity.getHealth() + 1);
     if (!transformPlant(entity, world, scheduler, imageStore)) {
-      scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+      scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.getActionPeriod());
     }
   }
 
@@ -159,20 +139,20 @@ public final class Functions {
 
     if (!transformPlant(entity, world, scheduler, imageStore)) {
 
-      scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+      scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.getActionPeriod());
     }
   }
 
   public static void executeFairyActivity(Entity entity, WorldModel world, ImageStore imageStore,
       EventScheduler scheduler) {
-    Optional<Entity> fairyTarget = findNearest(world, entity.position, new ArrayList<>(List.of(EntityKind.STUMP)));
+    Optional<Entity> fairyTarget = findNearest(world, entity.getPosition(), new ArrayList<>(List.of(EntityKind.STUMP)));
 
     if (fairyTarget.isPresent()) {
-      Point tgtPos = fairyTarget.get().position;
+      Point tgtPos = fairyTarget.get().getPosition();
 
       if (moveToFairy(entity, world, fairyTarget.get(), scheduler)) {
 
-        Entity sapling = createSapling(SAPLING_KEY + "_" + fairyTarget.get().id, tgtPos,
+        Entity sapling = createSapling(SAPLING_KEY + "_" + fairyTarget.get().getId(), tgtPos,
             getImageList(imageStore, SAPLING_KEY), 0);
 
         addEntity(world, sapling);
@@ -180,71 +160,48 @@ public final class Functions {
       }
     }
 
-    scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+    scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.getActionPeriod());
   }
 
   public static void executeDudeNotFullActivity(Entity entity, WorldModel world, ImageStore imageStore,
       EventScheduler scheduler) {
-    Optional<Entity> target = findNearest(world, entity.position,
+    Optional<Entity> target = findNearest(world, entity.getPosition(),
         new ArrayList<>(Arrays.asList(EntityKind.TREE, EntityKind.SAPLING)));
 
     if (target.isEmpty() || !moveToNotFull(entity, world, target.get(), scheduler)
         || !transformNotFull(entity, world, scheduler, imageStore)) {
-      scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+      scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.getActionPeriod());
     }
   }
 
   public static void executeDudeFullActivity(Entity entity, WorldModel world, ImageStore imageStore,
       EventScheduler scheduler) {
-    Optional<Entity> fullTarget = findNearest(world, entity.position, new ArrayList<>(List.of(EntityKind.HOUSE)));
+    Optional<Entity> fullTarget = findNearest(world, entity.getPosition(), new ArrayList<>(List.of(EntityKind.HOUSE)));
 
     if (fullTarget.isPresent() && moveToFull(entity, world, fullTarget.get(), scheduler)) {
       transformFull(entity, world, scheduler, imageStore);
     } else {
-      scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
+      scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.getActionPeriod());
     }
   }
 
   public static void scheduleActions(Entity entity, EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
-    switch (entity.kind) {
-    case DUDE_FULL:
-      scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-      scheduleEvent(scheduler, entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
-      break;
-
-    case DUDE_NOT_FULL:
-      scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-      scheduleEvent(scheduler, entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
-      break;
-
-    case OBSTACLE:
-      scheduleEvent(scheduler, entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
-      break;
-
-    case FAIRY:
-      scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-      scheduleEvent(scheduler, entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
-      break;
-
-    case SAPLING:
-      scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-      scheduleEvent(scheduler, entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
-      break;
-
-    case TREE:
-      scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.actionPeriod);
-      scheduleEvent(scheduler, entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
-      break;
-
-    default:
+    switch (entity.getKind()) {
+      case DUDE_FULL, DUDE_NOT_FULL, FAIRY, SAPLING, TREE -> {
+        scheduleEvent(scheduler, entity, createActivityAction(entity, world, imageStore), entity.getActionPeriod());
+        scheduleEvent(scheduler, entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
+      }
+      case OBSTACLE -> scheduleEvent(scheduler, entity, createAnimationAction(entity, 0), getAnimationPeriod(entity));
+      default -> {
+      }
     }
   }
 
   public static boolean transformNotFull(Entity entity, WorldModel world, EventScheduler scheduler,
       ImageStore imageStore) {
-    if (entity.resourceCount >= entity.resourceLimit) {
-      Entity dude = createDudeFull(entity.id, entity.position, entity.actionPeriod, entity.animationPeriod,
-          entity.resourceLimit, entity.images);
+    if (entity.getResourceCount() >= entity.getResourceLimit()) {
+      Entity dude = createDudeFull(entity.getId(), entity.getPosition(), entity.getActionPeriod(), entity.getAnimationPeriod(),
+          entity.getResourceLimit(), entity.getImages());
 
       removeEntity(world, scheduler, entity);
       unscheduleAllEvents(scheduler, entity);
@@ -771,9 +728,9 @@ public final class Functions {
 
   public static PImage getCurrentImage(Object object) {
     if (object instanceof Background background) {
-      return background.images.get(background.imageIndex);
+      return background.getImages().get(background.getImageIndex());
     } else if (object instanceof Entity entity) {
-      return entity.images.get(entity.imageIndex % entity.images.size());
+      return entity.getImages().get(entity.getImageIndex() % entity.getImages().size());
     } else {
       throw new UnsupportedOperationException(String.format("getCurrentImage not supported for %s", object));
     }
@@ -878,7 +835,7 @@ public final class Functions {
 
   public static void drawEntities(WorldView view) {
     for (Entity entity : view.world.entities) {
-      Point pos = entity.position;
+      Point pos = entity.getPosition();
 
       if (contains(view.viewport, pos)) {
         Point viewPoint = worldToViewport(view.viewport, pos.x, pos.y);

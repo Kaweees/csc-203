@@ -8,6 +8,7 @@ public class Applicant {
   private String name;
   private List<CourseGrade> grades;
   private int expYrs;
+  private String major;
 
   /**
    * Constructor that creates a new Applicant with the specified name and
@@ -18,10 +19,11 @@ public class Applicant {
    * @param expYrs Years of previous experience that are relevant to the job
    *               they applied for
    */
-  public Applicant(String name, List<CourseGrade> grades, int expYrs) {
+  public Applicant(String name, List<CourseGrade> grades, int expYrs, String major) {
     this.name = name;
     this.grades = grades;
     this.expYrs = expYrs;
+    this.major = major;
   }
 
   public String getName() {

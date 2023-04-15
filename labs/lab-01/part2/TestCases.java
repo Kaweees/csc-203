@@ -1,7 +1,6 @@
 package part2;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -19,13 +18,16 @@ public class TestCases {
    */
   @Test
   public void testGetName() {
-    // This will not compile until you implement the Applicant class
     List<CourseGrade> grades = Arrays.asList(new CourseGrade("Intro to CS", 100),
         new CourseGrade("Data Structures", 95), new CourseGrade("Algorithms", 91),
         new CourseGrade("Computer Organization", 91), new CourseGrade("Operating Systems", 75),
         new CourseGrade("Non-CS", 83));
-    Applicant testApplicant = new Applicant("Aakash", grades, 5);
-    assertEquals("Aakash", testApplicant.getName());
+    Applicant testApplicant = new Applicant("Aakash", grades, 5, "computer science");
+    List<CourseGrade> grades2 = Arrays.asList(new CourseGrade("CPE 123", 90), new CourseGrade("CPE 101", 91),
+        new CourseGrade("CPE 202", 92), new CourseGrade("CPE 203", 100));
+    Applicant testApplicant2 = new Applicant("Peter", grades2, 5, "computer engineering");
+    assertEquals("Peter", testApplicant2.getName());
+    assert (!testApplicant.getName().equals(testApplicant2.getName()));
   }
 
   @Test
@@ -34,8 +36,13 @@ public class TestCases {
         new CourseGrade("Data Structures", 95), new CourseGrade("Algorithms", 91),
         new CourseGrade("Computer Organization", 91), new CourseGrade("Operating Systems", 75),
         new CourseGrade("Non-CS", 83));
-    Applicant testApplicant = new Applicant("Aakash", grades, 5);
+    Applicant testApplicant = new Applicant("Aakash", grades, 5, "computer science");
+    List<CourseGrade> grades2 = Arrays.asList(new CourseGrade("CPE 123", 90), new CourseGrade("CPE 101", 91),
+        new CourseGrade("CPE 202", 92), new CourseGrade("CPE 203", 100));
+    Applicant testApplicant2 = new Applicant("Peter", grades2, 5, "computer engineering");
     assertEquals(grades, testApplicant.getGrades());
+    assertEquals(grades2, testApplicant2.getGrades());
+    assertNotSame(testApplicant.getGrades(), testApplicant2.getGrades());
   }
 
   @Test
@@ -44,9 +51,13 @@ public class TestCases {
         new CourseGrade("Data Structures", 95), new CourseGrade("Algorithms", 91),
         new CourseGrade("Computer Organization", 91), new CourseGrade("Operating Systems", 75),
         new CourseGrade("Non-CS", 83));
-    Applicant testApplicant = new Applicant("Aakash", grades, 5);
-    CourseGrade classGrade = testApplicant.getGradeFor("Data Structures");
-    assertEquals(95, classGrade.getScore());
+    Applicant testApplicant = new Applicant("Aakash", grades, 5, "computer science");
+    List<CourseGrade> grades2 = Arrays.asList(new CourseGrade("CPE 123", 90), new CourseGrade("CPE 101", 91),
+        new CourseGrade("CPE 202", 92), new CourseGrade("CPE 203", 100));
+    Applicant testApplicant2 = new Applicant("Peter", grades2, 5, "computer engineering");
+    assertEquals(95, testApplicant.getGradeFor("Data Structures").getScore());
+    assertEquals(90, testApplicant2.getGradeFor("CPE 123").getScore());
+    assertEquals(91, testApplicant2.getGradeFor("CPE 101").getScore());
   }
 
   @Test
@@ -55,8 +66,13 @@ public class TestCases {
         new CourseGrade("Data Structures", 95), new CourseGrade("Algorithms", 91),
         new CourseGrade("Computer Organization", 91), new CourseGrade("Operating Systems", 75),
         new CourseGrade("Non-CS", 83));
-    Applicant testApplicant = new Applicant("Aakash", grades, 5);
+    Applicant testApplicant = new Applicant("Aakash", grades, 5, "computer science");
+    List<CourseGrade> grades2 = Arrays.asList(new CourseGrade("CPE 123", 90), new CourseGrade("CPE 101", 91),
+        new CourseGrade("CPE 202", 92), new CourseGrade("CPE 203", 100));
+    Applicant testApplicant2 = new Applicant("Peter", grades2, 10, "computer engineering");
     assertEquals(5, testApplicant.getExpYrs());
+    assertEquals(10, testApplicant2.getExpYrs());
+    assertNotSame(testApplicant.getExpYrs(), testApplicant2.getExpYrs());
   }
 
   /*

@@ -32,21 +32,24 @@ public class TestCases {
         new CourseGrade("Data Structures", 95), new CourseGrade("Algorithms", 91),
         new CourseGrade("Computer Organization", 91), new CourseGrade("Operating Systems", 75),
         new CourseGrade("Non-CS", 83));
-    Applicant testApplicant1 = new Applicant("Hank Schrader", grades1, 5);
+    Applicant testApplicant1 = new Applicant("Hank Schrader", grades1, 5, "computer science");
     List<CourseGrade> grades2 = Arrays.asList(new CourseGrade("Intro to CS", 100),
         new CourseGrade("Data Structures", 95), new CourseGrade("Algorithms", 91),
         new CourseGrade("Computer Organization", 91), new CourseGrade("Operating Systems", 69),
         new CourseGrade("Non-CS", 83));
-    Applicant testApplicant2 = new Applicant("Walter White", grades2, 0);
+    Applicant testApplicant2 = new Applicant("Walter White", grades2, 0, "computer science");
     assertEquals(SimpleIf.analyzeApplicant2(testApplicant1), true);
     assertEquals(SimpleIf.analyzeApplicant2(testApplicant2), false);
   }
 
   @Test
   public void testAnalyzeApplicant3() {
-    /* TO DO: Write one more valid test case. */
-
     assertFalse(SimpleIf.analyzeApplicant(92, 99));
+  }
+
+  @Test
+  public void testAnalyzeApplicant4() {
+    assertTrue(SimpleIf.analyzeApplicant(103, 99));
   }
 
   @Test
@@ -61,9 +64,8 @@ public class TestCases {
 
   @Test
   public void testMaxAverage3() {
-    /* TO DO: Write one more valid test case. */
-
     assertEquals(SimpleIf.maxAverage(89.9, 90), 90, DELTA);
+    assertEquals(SimpleIf.maxAverage(75.0, 71), 75.0, DELTA);
   }
 
   ////////////////////////////////////////////////////////////
@@ -82,11 +84,7 @@ public class TestCases {
 
   @Test
   public void testSimpleLoop3() {
-    /*
-     * TO DO: Write one more valid test case to make sure that this function is
-     * not just returning 7.
-     */
-
+    assertEquals(18, SimpleLoop.sum(5, 7));
     assertEquals(10, SimpleLoop.sum(1, 4));
   }
 
@@ -111,8 +109,8 @@ public class TestCases {
 
   @Test
   public void testSimpleArray3() {
-    /* TO DO: Add a new test case. */
-
+    assertArrayEquals(new boolean[] { true, true, true, true, false, false },
+        SimpleArray.applicantAcceptable(new int[] { 100, 98, 97, 99, 90, 91 }, 95));
     assertArrayEquals(new boolean[] { false, false, false, true, true, false },
         SimpleArray.applicantAcceptable(new int[] { 82, 83, 84, 85, 90, 75 }, 84));
   }
@@ -131,11 +129,11 @@ public class TestCases {
 
   @Test
   public void testSimpleList2() {
-    List<Boolean> expected = Arrays.asList(false, false, true, true, false, false);
-
-    /* TO DO: Add a new test case. */
-    List<Integer> input = Arrays.asList(80, 85, 89, 92, 76, 81);
-    assertEquals(expected, SimpleList.applicantAcceptable(input, 88));
+    List<Boolean> expected1 = Arrays.asList(false, false, true, true, false, false);
+    List<Boolean> expected2 = Arrays.asList(false, true, true, true, false, true);
+    List<Integer> input = Arrays.asList(80, 85, 89, 92, 70, 81);
+    assertEquals(expected1, SimpleList.applicantAcceptable(input, 88));
+    assertEquals(expected2, SimpleList.applicantAcceptable(input, 80));
   }
 
   ////////////////////////////////////////////////////////////
@@ -154,7 +152,7 @@ public class TestCases {
 
   @Test
   public void testFourOver85_3() {
-    /* TO DO: Write a valid test case where the expected result is false. */
+    assertTrue(BetterLoop.atLeastFourOver85(new int[] { 90, 95, 93, 99, 80, 81 }));
     assertFalse(BetterLoop.atLeastFourOver85(new int[] { 85, 80, 85, 75, 80, 92 }));
   }
 
@@ -184,8 +182,6 @@ public class TestCases {
 
   @Test
   public void testExampleMap2() {
-    /* TO DO: Write another valid test case. */
-
     Map<String, List<CourseGrade>> courseListsByStudent = new HashMap<>();
     courseListsByStudent.put("Julie", Arrays.asList(new CourseGrade("CPE 123", 90), new CourseGrade("CPE 101", 91),
         new CourseGrade("CPE 202", 92), new CourseGrade("CPE 203", 100), new CourseGrade("CPE 225", 89)));
@@ -202,5 +198,17 @@ public class TestCases {
      * list is not important for this test.
      */
     assertEquals(new HashSet<>(expected), new HashSet<>(ExampleMap.highScoringStudents(courseListsByStudent, 86)));
+    Map<String, List<CourseGrade>> courseListsByStudent2 = new HashMap<>();
+    courseListsByStudent2.put("Peter",
+        Arrays.asList(new CourseGrade("EE 101", 73), new CourseGrade("CPE 101", 78), new CourseGrade("CPE 202", 75)));
+
+    courseListsByStudent2.put("Mark", Arrays.asList(new CourseGrade("CPE 101", 78), new CourseGrade("CPE 202", 98),
+        new CourseGrade("CPE 203", 86), new CourseGrade("CPE 225", 87)));
+    courseListsByStudent2.put("Nick",
+        Arrays.asList(new CourseGrade("CSC 123", 63), new CourseGrade("CSC 101", 64), new CourseGrade("CSC 202", 67)));
+
+    List<String> expected2 = Arrays.asList("Peter", "Mark");
+    assertEquals(new HashSet<>(expected2), new HashSet<>(ExampleMap.highScoringStudents(courseListsByStudent2, 69)));
+
   }
 }

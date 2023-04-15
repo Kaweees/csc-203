@@ -19,7 +19,7 @@ public class BetterLoop {
         count++;
       }
     }
-    return count > 4;
+    return count >= 4;
   }
 
   /**
