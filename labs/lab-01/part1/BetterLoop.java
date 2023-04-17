@@ -38,6 +38,6 @@ public class BetterLoop {
     for (int i = 0; i < scores.length - 1; i++) {
       total += scores[i];
     }
-    return total / 4.0;
+    return total / 5.0;
   }
 }
