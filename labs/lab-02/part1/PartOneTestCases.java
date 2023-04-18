@@ -6,11 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.css.Counter;
 
 /**
  * THIS CLASS WON'T COMPILE UNTIL YOU CREATE YOUR COUNTRY AND SECTOR CLASSES
@@ -87,4 +89,48 @@ public class PartOneTestCases {
     }
   }
 
+  @Test
+  public void testEmission() {
+    Emission emission = new Emission(1.0, 2.0, 3.0);
+    assertEquals(1.0, emission.getCO2());
+    assertEquals(2.0, emission.getN2O());
+    assertEquals(3.0, emission.getCH4());
+  }
+
+  @Test
+  public void testCountry() {
+    Map<Integer, Emission> emissions = new HashMap<>();
+    emissions.put(2010, new Emission(1.0, 2.0, 3.0));
+    emissions.put(2011, new Emission(4.0, 5.0, 6.0));
+    Country country = new Country("Canada", emissions);
+    assertEquals("Canada", country.getName());
+    assertEquals(2, country.getEmissions().size());
+    assertEquals(emissions, country.getEmissions());
+  }
+
+  @Test
+  public void testSector() {
+    Map<Integer, Double> emissions = new HashMap<>();
+    emissions.put(2010, 1.0);
+    emissions.put(2011, 2.0);
+    Sector sector = new Sector("Agriculture", emissions);
+    assertEquals("Agriculture", sector.getName());
+    assertEquals(2, sector.getEmissions().size());
+    assertEquals(emissions, sector.getEmissions());
+  }
+
+  @Test
+  public void testGetYearWithHighestEmissions() {
+    Map<Integer, Emission> countryEmissions = new HashMap<>();
+    countryEmissions.put(2010, new Emission(1.0, 2.0, 3.0));
+    countryEmissions.put(2011, new Emission(4.0, 5.0, 6.0));
+    Country country = new Country("Canada", countryEmissions);
+    assertEquals(2011, Util.getYearWithHighestEmissions(country));
+
+    Map<Integer, Double> sectorEmissions = new HashMap<>();
+    sectorEmissions.put(2010, 1.0);
+    sectorEmissions.put(2011, 2.0);
+    Sector sector = new Sector("Agriculture", sectorEmissions);
+    assertEquals(2011, Util.getYearWithHighestEmissions(sector));
+  }
 }

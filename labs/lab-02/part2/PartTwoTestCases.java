@@ -6,11 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.css.Counter;
 
 /**
  * NOTE THAT THIS FILE WILL NOT COMPILE UNTIL YOU HAVE COPIED OVER YOUR
@@ -86,4 +88,21 @@ public class PartTwoTestCases {
     }
   }
 
+  @Test
+  public void testSector() {
+    Map<Integer, Double> sectorEmissions = new HashMap<>();
+    sectorEmissions.put(2010, 1.0);
+    sectorEmissions.put(2011, 2.0);
+    Sector sector = new Sector("Agriculture", sectorEmissions);
+    assertEquals(2011, sector.getYearWithHighestEmissions());
+  }
+
+  @Test
+  public void testCountry() {
+    Map<Integer, Emission> countryEmissions = new HashMap<>();
+    countryEmissions.put(2010, new Emission(1.0, 2.0, 3.0));
+    countryEmissions.put(2011, new Emission(4.0, 5.0, 6.0));
+    Country country = new Country("Canada", countryEmissions);
+    assertEquals(2011, country.getYearWithHighestEmissions());    
+  }
 }
