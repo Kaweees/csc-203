@@ -8,10 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import part2.Country;
-import part2.Emission;
-import part2.Sector;
-
 /**
  * NOTE THAT THIS CLASS WILL NOT COMPILE UNTIL YOU HAVE COMPLETED PART 2 OF THIS
  * LAB
@@ -21,6 +17,12 @@ public class Main {
   public static void main(String[] args) throws FileNotFoundException {
     List<Country> countries = getCountries();
     List<Sector> sectors = getSectors();
+    // Which country had the highest methane gas emissions in 2000?
+    Country.countryWithHighestCH4InYear(countries, 2000);
+    // Which country had the highest increase in greenhouse gas emissions between 1988 (the year the Intergovernmental Panel on Climate Change was formed) and 2012?
+    Country.countryWithHighestChangeInEmissions(countries, 1988, 2012);
+    // Which sector had the highest average in greenhouse gas emissions between 1988 and 2012?
+    Sector.sectorWithBiggestChangeInEmissions(sectors, 1988, 2012);
   }
 
   /**
@@ -102,8 +104,6 @@ public class Main {
       Sector sector = new Sector(entry.getKey(), entry.getValue());
       result.add(sector);
     }
-
     return result;
   }
-
 }
