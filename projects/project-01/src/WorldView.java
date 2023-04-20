@@ -18,6 +18,26 @@ public final class WorldView {
     this.viewport = new Viewport(numRows, numCols);
   }
 
+  public PApplet getScreen() {
+    return this.screen;
+  }
+
+  public WorldModel getWorld() {
+    return this.world;
+  }
+
+  public int getTileWidth() {
+    return this.tileWidth;
+  }
+
+  public int getTileHeight() {
+    return this.tileHeight;
+  }
+
+  public Viewport getViewport() {
+    return this.viewport;
+  }
+
   public void shiftView(int colDelta, int rowDelta) {
     int newCol = clamp(this.viewport.getCol() + colDelta, 0, this.world.getNumCols() - this.viewport.getNumCols());
     int newRow = clamp(this.viewport.getRow() + rowDelta, 0, this.world.getNumRows() - this.viewport.getNumRows());
@@ -47,8 +67,14 @@ public final class WorldView {
 
       if (this.viewport.contains(pos)) {
         Point viewPoint = this.viewport.worldToViewport(pos.getX(), pos.getY());
-        this.screen.image(entity.getCurrentImage(), viewPoint.getX() * this.tileWidth, viewPoint.getY() * this.tileHeight);
+        this.screen.image(entity.getCurrentImage(), viewPoint.getX() * this.tileWidth,
+            viewPoint.getY() * this.tileHeight);
       }
     }
+  }
+
+  public void drawViewport() {
+    drawBackground();
+    drawEntities();
   }
 }

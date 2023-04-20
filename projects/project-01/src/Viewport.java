@@ -39,6 +39,7 @@ public final class Viewport {
   }
 
   public boolean contains(Point p) {
-    return p.getY() >= this.row && p.getY() < this.row + this.numRows && p.getX() >= this.col && p.getX() < this.col + this.numCols;
+    return p.getY() >= this.row && p.getY() < this.row + this.numRows && p.getX() >= this.col
+        && p.getX() < this.col + this.numCols;
   }
 }
