@@ -61,9 +61,9 @@ public class Country {
     Country changeCont = null;
     for (Country cont : countries) {
       Map<Integer, Emission> emi = cont.getEmissions();
-      double sumStart = emi.get(startYear).getCO2() + emi.get(startYear).getN2O() + emi.get(startYear).getCH4();
-      double sumEnd = emi.get(endYear).getCO2() + emi.get(endYear).getN2O() + emi.get(endYear).getCH4();
-      double delta = sumStart - sumEnd;
+      double emiStart = emi.get(startYear).getCO2() + emi.get(startYear).getN2O() + emi.get(startYear).getCH4();
+      double emiEnd = emi.get(endYear).getCO2() + emi.get(endYear).getN2O() + emi.get(endYear).getCH4();
+      double delta = (emiEnd - emiStart);
       if (delta > change) {
         change = delta;
         changeCont = cont;
