@@ -39,14 +39,14 @@ public class Sector {
   }
 
   public static Sector sectorWithBiggestChangeInEmissions(List<Sector> sectors, int startYear, int endYear) {
-    double finalAvg = 0;
+    double finalAvg = -1;
     Sector avgSect = null;
     for (Sector sect : sectors) {
       double sum = 0;
-      for (int i = startYear; i < endYear; i++) {
+      for (int i = startYear; i < endYear+1; i++) {
         sum += sect.getEmissions().get(i);
       }
-      double avg = (sum) / (endYear - startYear);
+      double avg = (sum) / (endYear - startYear+1);
       if (avg > finalAvg) {
         finalAvg = avg;
         avgSect = sect;
