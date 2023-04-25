@@ -51,7 +51,8 @@ public class Plotter extends PApplet {
   public void draw() {
     textSize(14);
     background(255);
-    this.plotEmissionsData(this.db.getSectors(), this.db.getSectorMinEmission(), this.db.getSectorMaxEmission());
+    // this.plotEmissionsData(this.db.getSectors(), this.db.getSectorMinEmission(), this.db.getSectorMaxEmission());
+    this.plotEmissionsData(this.db.getCountries(), this.db.getCountryMinEmission(), this.db.getCountryMaxEmission());
   }
 
   // Plots sector emission data.
