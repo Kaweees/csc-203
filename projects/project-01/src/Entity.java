@@ -177,7 +177,7 @@ public final class Entity {
       scheduler.unscheduleAllEvents(this);
 
       world.addEntity(dude);
-      scheduleActions(scheduler, world, imageStore);
+      dude.scheduleActions(scheduler, world, imageStore);
 
       return true;
     }
@@ -192,7 +192,7 @@ public final class Entity {
     world.removeEntity(scheduler, this);
 
     world.addEntity(dude);
-    scheduleActions(scheduler, world, imageStore);
+    dude.scheduleActions(scheduler, world, imageStore);
   }
 
   public boolean transformPlant(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
