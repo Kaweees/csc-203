@@ -18,22 +18,6 @@ public final class WorldView {
     this.viewport = new Viewport(numRows, numCols);
   }
 
-  public PApplet getScreen() {
-    return this.screen;
-  }
-
-  public WorldModel getWorld() {
-    return this.world;
-  }
-
-  public int getTileWidth() {
-    return this.tileWidth;
-  }
-
-  public int getTileHeight() {
-    return this.tileHeight;
-  }
-
   public Viewport getViewport() {
     return this.viewport;
   }

@@ -58,26 +58,6 @@ public final class Entity {
     this.position = position;
   }
 
-  public List<PImage> getImages() {
-    return images;
-  }
-
-  public int getImageIndex() {
-    return imageIndex;
-  }
-
-  public int getResourceCount() {
-    return resourceCount;
-  }
-
-  public int getResourceLimit() {
-    return resourceLimit;
-  }
-
-  public double getActionPeriod() {
-    return actionPeriod;
-  }
-
   public PImage getCurrentImage() {
     return this.images.get(this.imageIndex % this.images.size());
   }
@@ -92,10 +72,6 @@ public final class Entity {
 
   public int getHealth() {
     return this.health;
-  }
-
-  public int getHealthLimit() {
-    return this.healthLimit;
   }
 
   public void nextImage() {
@@ -125,8 +101,8 @@ public final class Entity {
 
       if (this.moveToFairy(world, fairyTarget.get(), scheduler)) {
 
-        Entity sapling = world.createSapling(WorldModel.SAPLING_KEY + "_" + fairyTarget.get().id, tgtPos,
-            imageStore.getImageList(WorldModel.SAPLING_KEY), 0);
+        Entity sapling = world.createSapling(Functions.SAPLING_KEY + "_" + fairyTarget.get().id, tgtPos,
+            imageStore.getImageList(Functions.SAPLING_KEY), 0);
 
         world.addEntity(sapling);
         sapling.scheduleActions(scheduler, world, imageStore);
@@ -207,8 +183,8 @@ public final class Entity {
 
   public boolean transformTree(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
     if (this.health <= 0) {
-      Entity stump = world.createStump(WorldModel.STUMP_KEY + "_" + this.id, this.position,
-          imageStore.getImageList(WorldModel.STUMP_KEY));
+      Entity stump = world.createStump(Functions.STUMP_KEY + "_" + this.id, this.position,
+          imageStore.getImageList(Functions.STUMP_KEY));
 
       world.removeEntity(scheduler, this);
 
@@ -222,8 +198,8 @@ public final class Entity {
 
   public boolean transformSapling(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
     if (this.health <= 0) {
-      Entity stump = world.createStump(WorldModel.STUMP_KEY + "_" + this.id, this.position,
-          imageStore.getImageList(WorldModel.STUMP_KEY));
+      Entity stump = world.createStump(Functions.STUMP_KEY + "_" + this.id, this.position,
+          imageStore.getImageList(Functions.STUMP_KEY));
 
       world.removeEntity(scheduler, this);
 
@@ -231,11 +207,11 @@ public final class Entity {
 
       return true;
     } else if (this.health >= this.healthLimit) {
-      Entity tree = world.createTree(WorldModel.TREE_KEY + "_" + this.id, this.position,
-          getNumFromRange(WorldModel.TREE_ACTION_MAX, WorldModel.TREE_ACTION_MIN),
-          getNumFromRange(WorldModel.TREE_ANIMATION_MAX, WorldModel.TREE_ANIMATION_MIN),
-          getIntFromRange(WorldModel.TREE_HEALTH_MAX, WorldModel.TREE_HEALTH_MIN),
-          imageStore.getImageList(WorldModel.TREE_KEY));
+      Entity tree = world.createTree(Functions.TREE_KEY + "_" + this.id, this.position,
+          getNumFromRange(Functions.TREE_ACTION_MAX, Functions.TREE_ACTION_MIN),
+          getNumFromRange(Functions.TREE_ANIMATION_MAX, Functions.TREE_ANIMATION_MIN),
+          getIntFromRange(Functions.TREE_HEALTH_MAX, Functions.TREE_HEALTH_MIN),
+          imageStore.getImageList(Functions.TREE_KEY));
 
       world.removeEntity(scheduler, this);
 

@@ -14,14 +14,6 @@ public final class EventScheduler {
     this.currentTime = 0;
   }
 
-  public PriorityQueue<Event> getEventQueue() {
-    return this.eventQueue;
-  }
-
-  public Map<Entity, List<Event>> getPendingEvents() {
-    return this.pendingEvents;
-  }
-
   public double getCurrentTime() {
     return this.currentTime;
   }

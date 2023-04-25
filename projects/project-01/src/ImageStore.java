@@ -7,8 +7,8 @@ public final class ImageStore {
   private final Map<String, List<PImage>> images;
   private final List<PImage> defaultImages;
 
-  public static final int COLOR_MASK = 0xffffff;
-  public static final int KEYED_IMAGE_MIN = 5;
+  private static final int COLOR_MASK = 0xffffff;
+  private static final int KEYED_IMAGE_MIN = 5;
   private static final int KEYED_RED_IDX = 2;
   private static final int KEYED_GREEN_IDX = 3;
   private static final int KEYED_BLUE_IDX = 4;
