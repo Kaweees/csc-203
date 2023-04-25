@@ -1,10 +1,8 @@
-package src;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Country {
+public class Country implements GreenhouseGasEmitter {
   private String name;
   private Map<Integer, Emission> emissions = new HashMap<>();
 
@@ -72,5 +70,10 @@ public class Country {
     System.out.println(changeCont.getName());
     System.out.println(change);
     return changeCont;
+  }
+
+  public double getEmissionsInYear(int year) {
+    Emission emi = this.emissions.get(year);
+    return emi.getCO2() + emi.getN2O() + emi.getCH4();
   }
 }

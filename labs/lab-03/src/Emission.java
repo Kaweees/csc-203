@@ -1,9 +1,7 @@
-package src;
-
 public class Emission {
-  private double co2;
-  private double n2o;
-  private double ch4;
+  private final double co2;
+  private final double n2o;
+  private final double ch4;
 
   public Emission(double co2, double n2o, double ch4) {
     this.co2 = co2;

@@ -1,11 +1,9 @@
-package src;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Sector {
-  private String name;
+public class Sector implements GreenhouseGasEmitter {
+  private final String name;
   private Map<Integer, Double> emissions = new HashMap<>();
 
   public Sector(String name, Map<Integer, Double> emissions) {
@@ -43,17 +41,22 @@ public class Sector {
     Sector avgSect = null;
     for (Sector sect : sectors) {
       double sum = 0;
-      for (int i = startYear; i < endYear+1; i++) {
+      for (int i = startYear; i < endYear + 1; i++) {
         sum += sect.getEmissions().get(i);
       }
-      double avg = (sum) / (endYear - startYear+1);
+      double avg = (sum) / (endYear - startYear + 1);
       if (avg > finalAvg) {
         finalAvg = avg;
         avgSect = sect;
       }
     }
+    assert avgSect != null;
     System.out.println(avgSect.getName());
     System.out.println(finalAvg);
     return avgSect;
+  }
+
+  public double getEmissionsInYear(int year) {
+    return this.emissions.get(year);
   }
 }
