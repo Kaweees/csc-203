@@ -1,10 +1,9 @@
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Country implements GreenhouseGasEmitter {
-  private String name;
-  private Map<Integer, Emission> emissions = new HashMap<>();
+  private final String name;
+  private final Map<Integer, Emission> emissions;
 
   public Country(String name, Map<Integer, Emission> emissions) {
     this.name = name;
@@ -49,6 +48,7 @@ public class Country implements GreenhouseGasEmitter {
         highCount = cont;
       }
     }
+    assert highCount != null;
     System.out.println(highCount.getName());
     System.out.println(highEmi);
     return highCount;
@@ -67,6 +67,7 @@ public class Country implements GreenhouseGasEmitter {
         changeCont = cont;
       }
     }
+    assert changeCont != null;
     System.out.println(changeCont.getName());
     System.out.println(change);
     return changeCont;

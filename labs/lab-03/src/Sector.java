@@ -1,10 +1,9 @@
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Sector implements GreenhouseGasEmitter {
   private final String name;
-  private Map<Integer, Double> emissions = new HashMap<>();
+  private final Map<Integer, Double> emissions;
 
   public Sector(String name, Map<Integer, Double> emissions) {
     this.name = name;

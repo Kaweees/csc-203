@@ -122,7 +122,7 @@ public class Plotter extends PApplet {
     line(MARGIN_LR, this.height - MARGIN_TB, MARGIN_LR, MARGIN_TB);
 
     pushMatrix();
-    translate(MARGIN_LR / 6, (this.height / 2));
+    translate((float) MARGIN_LR / 6, ((float) this.height / 2));
     rotate(radians(270));
     textAlign(CENTER, CENTER);
     textSize(14);
@@ -152,7 +152,7 @@ public class Plotter extends PApplet {
     line(MARGIN_LR, this.height - MARGIN_TB, this.width - 10, this.height - MARGIN_TB);
     textAlign(CENTER, CENTER);
     textSize(14);
-    text("Year", this.width / 2, this.height - (MARGIN_TB / 2));
+    text("Year", (float) this.width / 2, this.height - ((float) MARGIN_TB / 2));
   }
 
   // Writes the plot's title
@@ -160,7 +160,7 @@ public class Plotter extends PApplet {
     fill(21, 71, 52); // Font colour Poly Green
     textAlign(CENTER, CENTER);
     textSize(16);
-    text(title, this.width / 2, MARGIN_TB / 2);
+    text(title, (float) this.width / 2, (float) MARGIN_TB / 2);
   }
 
   private void writeToolTipLabel(String text, int x, int y) {
@@ -193,7 +193,6 @@ public class Plotter extends PApplet {
     double unroundedTickSize = range / (tickCount - 1);
     double x = Math.ceil(Math.log10(unroundedTickSize) - 1);
     double pow10x = Math.pow(10, x);
-    double roundedTickRange = Math.ceil(unroundedTickSize / pow10x) * pow10x;
-    return roundedTickRange;
+    return Math.ceil(unroundedTickSize / pow10x) * pow10x;
   }
 }
