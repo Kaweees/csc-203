@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 class Player {
@@ -8,6 +9,8 @@ class Player {
   private ArrayList<Float> moneyOverTime;
   Random random = new Random();
   private int red, green, blue;
+
+  private int[] lotteryNumbers = new int[5];
 
   // constructor
   public Player(PlayerKind pK, float startFunds) {
@@ -39,8 +42,16 @@ class Player {
     return blue;
   }
 
+  public int[] getLotteryNumbers() {
+    return lotteryNumbers;
+  }
+
   public float getMoney() {
     return money;
+  }
+
+  public void setMoney(float newMoney) {
+    money = newMoney;
   }
 
   public PlayerKind getKind() {
@@ -55,4 +66,17 @@ class Player {
     moneyOverTime.add(money);
   }
 
+  public void playRandom() {
+    for (int i = 0; i < lotteryNumbers.length; i++) {
+      int randNum = random.nextInt(42) + 1;
+      for (int j = 0; j < lotteryNumbers.length; j++) {
+        if (randNum == lotteryNumbers[j]) {
+          randNum = random.nextInt(42) + 1;
+          j = 0;
+        }
+      }
+      lotteryNumbers[i] = randNum;
+    }
+    Arrays.sort(lotteryNumbers);
+  }
 }
