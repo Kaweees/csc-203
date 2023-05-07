@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class FileProcessor {
-
   /**
    * Processes arithmetic expressions line-by-line in the given file.
    *
