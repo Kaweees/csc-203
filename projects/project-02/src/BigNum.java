@@ -14,14 +14,25 @@ public class BigNum {
   /**
    * Constructs a new BigNum with the specified value.
    *
-   * @param this.list = new LinkedList(); The value of the BigNum. Cannot be null.
+   * @param value The value of the BigNum. Cannot be null.
    */
-  public BigNum(String str) {
-    int value = Integer.parseInt(str);
+  public BigNum(String value) {
     this.list = new LinkedList();
-    while (value > 0) {
-      this.list.add(value % 10);
-      value /= 10;
+    int result = 0;
+    for (int i = value.length() - 1; i >= 0; i--) {
+      if (!Character.isDigit(value.charAt(i))) {
+        throw new IllegalArgumentException("Value must be a number.");
+      }
+      result += (value.charAt(i) - '0') * Math.pow(10, value.length() - 1 - i);
+    }
+
+    while (result > 0) {
+      this.list.add(result % 10);
+      result /= 10;
+    }
+
+    if (this.list.getSize() == 0) {
+      this.list.add(0);
     }
   }
 

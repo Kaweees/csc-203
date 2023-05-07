@@ -100,10 +100,10 @@ public class TestCases {
 
   @Test
   public void testBigNumAdd2() {
-    BigNum num1 = new BigNum("123");
+    BigNum num1 = new BigNum("0");
     BigNum num2 = new BigNum("456");
     BigNum result = BigNum.add(num2, num1);
-    assertEquals("579", result.toString());
+    assertEquals("456", result.toString());
   }
 
   @Test
