@@ -2,7 +2,7 @@
  * A class representing numbers that are too large to be stored in a primitive data type.
  */
 public class BigNum {
-  private LinkedList list = null;
+  private final LinkedList list;
 
   /**
    * Constructs an empty BigNum.
@@ -66,52 +66,36 @@ public class BigNum {
   /**
    * Multiples two BigNums together.
    *
-   * @param operan1 a BigNum to multiply. Cannot be null. Cannot be negative. Cannot be zero. Cannot be empty.
-   * @param operan2 another BigNum to multiply. Cannot be null. Cannot be negative. Cannot be zero. Cannot be empty.
+   * @param operand1 a BigNum to multiply. Cannot be null. Cannot be negative. Cannot be zero. Cannot be empty.
+   * @param operand2 another BigNum to multiply. Cannot be null. Cannot be negative. Cannot be zero. Cannot be empty.
    * @return The product of the two BigNums.
    */
-  public static BigNum multiply(BigNum operan1, BigNum operan2) {
+  public static BigNum multiply(BigNum operand1, BigNum operand2) {
     BigNum result = new BigNum();
-    if ((operan1.getList().getSize() == 1) || (operan2.getList().getSize() == 1)) {
-      if ((operan1.toString().equals("0")) || (operan2.toString().equals("0"))) {
-        result.getList().add(0);
-        return result;
-      } else if (operan1.getList().getHead().getValue() == 1) {
-        return operan2;
-      } else if (operan2.getList().getHead().getValue() == 1) {
-        return operan1;
+    int shiftOp2 = 0;
+    result.getList().add(0);
+    Node cur1;
+    Node cur2 = operand2.getList().getHead();
+    Node cur3;
+    while (cur2 != null) {
+      int sum, carry = 0;
+      cur3 = result.getList().getHead();
+      for (int i = 0; i < shiftOp2; i++) {
+        cur3 = cur3.getNext();
       }
-    } else {
-      int shiftOp1 = 0;
-      int shiftOp2 = 0;
-      Node temp;
-      result.getList().add(0);
-      Node cur1 = operan1.getList().getHead();
-      Node cur2 = operan2.getList().getHead();
-      Node cur3 = result.getList().getHead();
-      while (cur2 != null) {
-        int sum, carry = 0;
-        cur3 = result.getList().getHead();
-        for (int i = 0; i < shiftOp2; i++) {
-          if (cur3.getNext() == null) {
-            result.getList().add(0);
-          }
-          cur3 = cur3.getNext();
+      cur1 = operand1.getList().getHead();
+      while (cur1 != null) {
+        sum = (cur3.getValue() + (cur1.getValue() * cur2.getValue()) + carry) % 10;
+        carry = (cur3.getValue() + (cur1.getValue() * cur2.getValue()) + carry) / 10;
+        cur3.setValue(sum);
+        cur1 = cur1.getNext();
+        if (cur3.getNext() == null) {
+          result.getList().add(0);
         }
-        cur1 = operan1.getList().getHead();
-        while (cur1 != null) {
-          sum = (cur3.getValue() + (cur1.getValue() * cur2.getValue()) + carry) % 10;
-          carry = (cur3.getValue() + (cur1.getValue() * cur2.getValue()) + carry) / 10;
-          cur3.setValue(sum);
-          cur1 = cur1.getNext();
-          if (cur3.getNext() == null) {
-            result.getList().add(0);
-          }
-          cur3 = cur3.getNext();
-        }
-        cur2 = cur2.getNext();
-        shiftOp2++;
+        cur3 = cur3.getNext();
       }
+      cur2 = cur2.getNext();
+      shiftOp2++;
     }
     return result;
   }

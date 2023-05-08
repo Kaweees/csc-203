@@ -135,6 +135,26 @@ public class TestCases {
   }
 
   @Test
+  public void testBigNumMultiply2() {
+    BigNum num1 = new BigNum("123");
+    BigNum num2 = new BigNum("0");
+    BigNum result = BigNum.multiply(num1, num2);
+    assertEquals("0", result.toString());
+    result = BigNum.multiply(num2, num1);
+    assertEquals("0", result.toString());
+  }
+
+  @Test
+  public void testBigNumMultiply3() {
+    BigNum num1 = new BigNum("123");
+    BigNum num2 = new BigNum("1");
+    BigNum result = BigNum.multiply(num1, num2);
+    assertEquals("123", result.toString());
+    result = BigNum.multiply(num2, num1);
+    assertEquals("123", result.toString());
+  }
+
+  @Test
   public void testRemoveLeadingZeros() {
     BigNum num1 = new BigNum("00100");
     assertEquals("100", num1.toString());
