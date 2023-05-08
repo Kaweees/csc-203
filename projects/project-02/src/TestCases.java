@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCases {
   // Begin tests for Node class
@@ -58,6 +57,11 @@ public class TestCases {
   public void testBigNumConstructor() {
     BigNum num = new BigNum("123");
     assertEquals("123", num.toString());
+  }
+
+  @Test
+  public void testBadBigNumConstructor() {
+    assertThrows(IllegalArgumentException.class, () -> new BigNum("sasas"));
   }
 
   @Test
@@ -120,6 +124,14 @@ public class TestCases {
     BigNum num2 = new BigNum("123");
     BigNum result = BigNum.add(num1, num2);
     assertEquals("456912", result.toString());
+  }
+
+  @Test
+  public void testBigNumMultiply() {
+    BigNum num1 = new BigNum("123");
+    BigNum num2 = new BigNum("456");
+    BigNum result = BigNum.multiply(num1, num2);
+    assertEquals("56088", result.toString());
   }
 
   @Test
