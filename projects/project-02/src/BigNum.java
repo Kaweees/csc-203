@@ -77,8 +77,10 @@ public class BigNum {
     Node cur1;
     Node cur2 = operand2.getList().getHead();
     Node cur3;
+    int carry = 0;
     while (cur2 != null) {
-      int sum, carry = 0;
+      int sum;
+      carry = 0;
       cur3 = result.getList().getHead();
       for (int i = 0; i < shiftOp2; i++) {
         cur3 = cur3.getNext();
@@ -97,7 +99,30 @@ public class BigNum {
       cur2 = cur2.getNext();
       shiftOp2++;
     }
+    if (carry != 0) {
+      result.getList().getTail().setValue(result.getList().getTail().getValue() + carry);
+    }
     return result;
+  }
+
+  public static BigNum exponent(BigNum operand1, int num) {
+    if (num == 0) {
+      return new BigNum("1");
+    } else if (num == 1) {
+      return operand1;
+    } else {
+      BigNum square = BigNum.multiply(operand1, operand1);
+      BigNum result = square;
+      boolean isOdd = num % 2 != 0;
+      num = (isOdd ? ((num - 1) / 2) : (num / 2));
+      for (int i = 1; i < num; i++) {
+        result = BigNum.multiply(result, square);
+      }
+      if (isOdd) {
+        result = BigNum.multiply(result, operand1);
+      }
+      return result;
+    }
   }
 
   public LinkedList getList() {

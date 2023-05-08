@@ -1,8 +1,67 @@
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestCases {
+  // Begin tests for BigNumArithmetic class
+  /**
+   * The actual standard output stream.
+   */
+  private PrintStream old;
+
+  /**
+   * The streams we're using to capture printed output.
+   */
+  private ByteArrayOutputStream baos;
+
+  /**
+   * Gets called before each test method. Need to do this so that we can capture the printed output from each method.
+   */
+  @BeforeEach
+  public void setUp() {
+    this.old = System.out; // Save a reference to the original stdout stream.
+    this.baos = new ByteArrayOutputStream();
+    PrintStream ps = new PrintStream(baos);
+    System.setOut(ps);
+  }
+
+  @Test
+  public void testBadArgsArithmetic() {
+    assertThrows(IllegalArgumentException.class, () -> BigNumArithmetic.main(new String[] { "foo", "bar" }));
+  }
+
+  @Test
+  public void testMissingArgsArithmetic() {
+    assertThrows(FileNotFoundException.class, () -> BigNumArithmetic.main(new String[] { "missingfile.txt" }));
+  }
+
+  @Test
+  public void testSampleFile() {
+    BigNumArithmetic.main(new String[] { "SampleInput.txt" });
+    String output = this.baos.toString();
+    assertEquals("""
+      1 + 2 = 3
+      2 ^ 4 = 16
+      3 * 5 = 15
+      2 ^ 40 = 1099511627776""", output);
+  }
+
+  /**
+   * Gets called after each test method. Need to do this so that we are no longer capturing all printed output and
+   * printed stuff appears like normal.
+   */
+  @AfterEach
+  public void tearDown() {
+    System.out.flush();
+    System.setOut(this.old);
+  }
+
   // Begin tests for Node class
   @Test
   public void testNodeConstructor() {
@@ -61,7 +120,7 @@ public class TestCases {
 
   @Test
   public void testBadBigNumConstructor() {
-    assertThrows(IllegalArgumentException.class, () -> new BigNum("sasas"));
+    assertThrows(IllegalArgumentException.class, () -> new BigNum("sass"));
   }
 
   @Test
@@ -152,6 +211,34 @@ public class TestCases {
     assertEquals("123", result.toString());
     result = BigNum.multiply(num2, num1);
     assertEquals("123", result.toString());
+  }
+
+  @Test
+  public void testBigNumExponentEven() {
+    BigNum num1 = new BigNum("2");
+    BigNum result = BigNum.exponent(num1, 4);
+    assertEquals("16", result.toString());
+  }
+
+  @Test
+  public void testBigNumExponentOdd() {
+    BigNum num1 = new BigNum("2");
+    BigNum result = BigNum.exponent(num1, 5);
+    assertEquals("32", result.toString());
+  }
+
+  @Test
+  public void testBigNumExponentZero() {
+    BigNum num1 = new BigNum("2");
+    BigNum result = BigNum.exponent(num1, 0);
+    assertEquals("1", result.toString());
+  }
+
+  @Test
+  public void testBigNumExponentOne() {
+    BigNum num1 = new BigNum("2");
+    BigNum result = BigNum.exponent(num1, 1);
+    assertEquals("2", result.toString());
   }
 
   @Test
