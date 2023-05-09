@@ -77,9 +77,9 @@ public final class CommunityLSim {
   }
 
   private float find_poorest_person() {
-    float highest = 0.0f;
+    float highest = players.get(0).getMoney();
     for (Player peep : players) {
-      if (peep.getMoney() > highest)
+      if (peep.getMoney() < highest)
         highest = peep.getMoney();
     }
     return highest;
@@ -88,7 +88,7 @@ public final class CommunityLSim {
   private float find_richest_person() {
     float lowest = players.get(0).getMoney();
     for (Player peep : players) {
-      if (peep.getMoney() < lowest)
+      if (peep.getMoney() > lowest)
         lowest = peep.getMoney();
     }
     return lowest;
