@@ -1,3 +1,5 @@
+package calculator;
+
 import java.io.IOException;
 import java.io.Reader;
 
@@ -5,7 +7,7 @@ class CharReader {
   private final Reader input;
 
   private boolean gotEOF = false;
-  private boolean putback = false;
+  private boolean putBack = false;
   private int currentChar = '\0';
 
   public static final int EOF = -1;
@@ -15,8 +17,8 @@ class CharReader {
   }
 
   public int read() {
-    if (putback) {
-      putback = false;
+    if (putBack) {
+      putBack = false;
     } else {
       currentChar = protectedRead();
     }
@@ -29,11 +31,11 @@ class CharReader {
   }
 
   public int lookahead() {
-    if (putback) {
+    if (putBack) {
       return currentChar;
     } else {
       int c = read();
-      putback = true;
+      putBack = true;
       return c;
     }
   }

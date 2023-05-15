@@ -1,3 +1,5 @@
+package calculator;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -62,17 +64,11 @@ class Scanner {
 
   private Token buildSymbol() throws InvalidCharacterException {
     switch (in.lookahead()) {
-    case '(':
-    case ')':
-    case '+':
-    case '-':
-    case '*':
-    case '/':
-    case '=':
-    case '\n':
+    case '(', ')', '+', '-', '*', '/', '=', '\n' -> {
       return Token.createToken(Constants.lookup(String.valueOf((char) in.read())));
+    }
     // unrecognized character
-    default: {
+    default -> {
       in.read(); // skip character
       throw new InvalidCharacterException();
     }

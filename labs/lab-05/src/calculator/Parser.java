@@ -1,3 +1,5 @@
+package calculator;
+
 class Parser {
   private final Scanner scanner;
   private Token currentToken;
@@ -61,13 +63,10 @@ class Parser {
 
   private Expression parseUnary() throws InvalidOperationException {
     Expression e;
-    switch (currentTokenCode()) {
-    case Constants.TK_MINUS:
+    if (currentTokenCode() == Constants.TK_MINUS) {
       e = parseUnaryNegation();
-      break;
-    default:
+    } else {
       e = parseFactor();
-      break;
     }
     return e;
   }
@@ -80,20 +79,17 @@ class Parser {
   private Expression parseFactor() throws InvalidOperationException {
     Expression e = null;
     switch (currentTokenCode()) {
-    case Constants.TK_LPAREN:
+    case Constants.TK_LPAREN -> {
       match(Constants.TK_LPAREN);
       e = parseExpression();
       match(Constants.TK_RPAREN);
-      break;
-    case Constants.TK_ID:
-      e = new IdentifierExpression(matchIdentifier());
-      break;
-    case Constants.TK_NUM:
+    }
+    case Constants.TK_ID -> e = new IdentifierExpression(matchIdentifier());
+    case Constants.TK_NUM -> {
       e = new DoubleConstantExpression(Double.parseDouble(currentLexeme()));
       nextToken();
-      break;
-    default:
-      expected("identifier or value");
+    }
+    default -> expected("identifier or value");
     }
     return e;
   }
@@ -113,22 +109,13 @@ class Parser {
   }
 
   private static Expression newBinaryOp(final int tkcode, final Expression lft, final Expression rht) {
-    Expression e = null;
-    switch (tkcode) {
-    case Constants.TK_PLUS:
-      e = new AddExpression(lft, rht);
-      break;
-    case Constants.TK_MINUS:
-      e = new SubtractExpression(lft, rht);
-      break;
-    case Constants.TK_TIMES:
-      e = new MultiplyExpression(lft, rht);
-      break;
-    case Constants.TK_DIVIDE:
-      e = new DivideExpression(lft, rht);
-      break;
-    }
-    return e;
+    return switch (tkcode) {
+      case Constants.TK_PLUS -> new AddExpression(lft, rht);
+      case Constants.TK_MINUS -> new SubtractExpression(lft, rht);
+      case Constants.TK_TIMES -> new MultiplyExpression(lft, rht);
+      case Constants.TK_DIVIDE -> new DivideExpression(lft, rht);
+      default -> null;
+    };
   }
 
   private String currentLexeme() {
@@ -194,7 +181,7 @@ class Parser {
     while (tkcode != Constants.TK_NEWLINE && tkcode != Constants.TK_EOF) {
       try {
         nextToken();
-      } catch (InvalidOperationException e) {
+      } catch (InvalidOperationException ignored) {
       }
       tkcode = currentTokenCode();
     }

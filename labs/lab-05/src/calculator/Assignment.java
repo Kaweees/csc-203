@@ -1,3 +1,5 @@
+package calculator;
+
 class Assignment implements Operation {
   private final String id;
   private final Expression e;

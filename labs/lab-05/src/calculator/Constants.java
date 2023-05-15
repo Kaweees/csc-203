@@ -1,3 +1,5 @@
+package calculator;
+
 import java.util.HashMap;
 
 public class Constants {
@@ -22,9 +24,9 @@ public class Constants {
   // lexemes array
   static {
     for (int i = LEXEME_FIRST; i <= LEXEME_LAST; i++) {
-      map.put(lexemes[i], new Integer(i));
+      map.put(lexemes[i], i);
     }
-  };
+  }
 
   public static int lookup(String str) {
     return map.getOrDefault(str, TK_NONE);
