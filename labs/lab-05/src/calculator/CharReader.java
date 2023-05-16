@@ -3,7 +3,7 @@ package calculator;
 import java.io.IOException;
 import java.io.Reader;
 
-class CharReader {
+public class CharReader {
   private final Reader input;
 
   private boolean gotEOF = false;

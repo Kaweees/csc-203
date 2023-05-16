@@ -1,18 +1,18 @@
 package calculator;
 
-class NegationExpression implements Expression {
-  private final Expression opnd;
+public class NegationExpression implements Expression {
+  private final Expression operand;
 
-  public NegationExpression(final Expression opnd) {
-    this.opnd = opnd;
+  public NegationExpression(final Expression operand) {
+    this.operand = operand;
   }
 
   public String toString() {
-    return "-" + opnd;
+    return "-" + operand;
   }
 
   public double evaluate(final Bindings bindings) {
-    return -opnd.evaluate(bindings);
+    return -operand.evaluate(bindings);
   }
 
 }

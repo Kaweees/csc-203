@@ -1,6 +1,6 @@
 package calculator;
 
-class InvalidOperationException extends Exception {
+public class InvalidOperationException extends Exception {
   public InvalidOperationException(final String msg) {
     super(msg);
   }

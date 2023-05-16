@@ -3,7 +3,7 @@ package calculator;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-class Scanner {
+public class Scanner {
   private final CharReader in = new CharReader(new BufferedReader(new InputStreamReader(System.in)));
 
   public Token nextToken() throws InvalidNumberException, InvalidCharacterException {

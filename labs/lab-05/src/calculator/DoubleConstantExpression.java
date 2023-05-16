@@ -1,6 +1,6 @@
 package calculator;
 
-class DoubleConstantExpression implements Expression {
+public class DoubleConstantExpression implements Expression {
   private final double val;
 
   public DoubleConstantExpression(final double val) {

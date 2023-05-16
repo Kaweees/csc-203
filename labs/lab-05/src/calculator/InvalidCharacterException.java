@@ -1,3 +1,3 @@
 package calculator;
 
-class InvalidCharacterException extends ScannerException {}
+public class InvalidCharacterException extends ScannerException {}

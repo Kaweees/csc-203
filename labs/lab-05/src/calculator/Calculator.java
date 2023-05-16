@@ -1,3 +1,5 @@
+package calculator;
+
 public class Calculator {
   private static final String STANDARD_HEADER = "Welcome to the simple calculator.\n " + "To exit, hit <ctrl-d>.";
   private static final String STANDARD_PROMPT = "-> ";
@@ -23,9 +25,7 @@ public class Calculator {
         if (op != null) {
           System.out.println(op + " => " + op.evaluate(this.bindings));
         }
-      } catch (InvalidOperationException exp) {
-        System.err.println(exp.getMessage());
-      } catch (UnboundIdentifierException exp) {
+      } catch (InvalidOperationException | UnboundIdentifierException exp) {
         System.err.println(exp.getMessage());
       }
     }

@@ -3,7 +3,7 @@ package calculator;
 import java.util.HashMap;
 import java.util.Map;
 
-class VariableBindings implements Bindings {
+public class VariableBindings implements Bindings {
   private final Map<String, Double> bindings = new HashMap<>();
 
   public void addBinding(final String id, final double value) {

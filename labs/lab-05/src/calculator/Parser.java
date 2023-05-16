@@ -1,6 +1,6 @@
 package calculator;
 
-class Parser {
+public class Parser {
   private final Scanner scanner;
   private Token currentToken;
 
