@@ -1,14 +1,12 @@
-package Lab7;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import processing.core.PApplet;
-import processing.core.PImage;
+import processing.core.*;
 
 public class PathingMain extends PApplet {
-  private List<PImage> imgs;
+  private List<PImage> images;
   private int current_image;
   private long next_time;
   private PImage background;
@@ -39,12 +37,12 @@ public class PathingMain extends PApplet {
   /* runs once to set up world */
   public void setup() {
 
-    path = new LinkedList<>();
+    path = new LinkedList<Point>();
     wPos = new Point(2, 2);
-    imgs = new ArrayList<>();
-    imgs.add(loadImage("images/wyvern1.bmp"));
-    imgs.add(loadImage("images/wyvern2.bmp"));
-    imgs.add(loadImage("images/wyvern3.bmp"));
+    images = new ArrayList<>();
+    images.add(loadImage("images/wyvern1.bmp"));
+    images.add(loadImage("images/wyvern2.bmp"));
+    images.add(loadImage("images/wyvern3.bmp"));
 
     background = loadImage("images/grass.bmp");
     obstacle = loadImage("images/vein.bmp");
@@ -61,10 +59,8 @@ public class PathingMain extends PApplet {
 
   /* set up a 2D grid to represent the world */
   private static void initialize_grid(GridValues[][] grid) {
-    for (int row = 0; row < grid.length; row++) {
-      for (int col = 0; col < grid[row].length; col++) {
-        grid[row][col] = GridValues.BACKGROUND;
-      }
+    for (GridValues[] gridValues : grid) {
+      Arrays.fill(gridValues, GridValues.BACKGROUND);
     }
 
     // set up some obstacles
@@ -84,7 +80,7 @@ public class PathingMain extends PApplet {
   }
 
   private void next_image() {
-    current_image = (current_image + 1) % imgs.size();
+    current_image = (current_image + 1) % images.size();
   }
 
   /* runs over and over */
@@ -99,7 +95,7 @@ public class PathingMain extends PApplet {
     draw_grid();
     draw_path();
 
-    image(imgs.get(current_image), wPos.x * TILE_SIZE, wPos.y * TILE_SIZE);
+    image(images.get(current_image), wPos.x * TILE_SIZE, wPos.y * TILE_SIZE);
   }
 
   private void draw_grid() {
@@ -114,31 +110,27 @@ public class PathingMain extends PApplet {
     if (drawPath) {
       for (Point p : path) {
         fill(128, 0, 0);
-        rect(p.x * TILE_SIZE + TILE_SIZE * 3 / 8, p.y * TILE_SIZE + TILE_SIZE * 3 / 8, TILE_SIZE / 4, TILE_SIZE / 4);
+        rect(p.x * TILE_SIZE + (float) (TILE_SIZE * 3) / 8, p.y * TILE_SIZE + (float) (TILE_SIZE * 3) / 8, (float) TILE_SIZE
+                / 4, (float) TILE_SIZE / 4);
       }
     }
   }
 
   private void draw_tile(int row, int col) {
     switch (grid[row][col]) {
-    case BACKGROUND:
-      image(background, col * TILE_SIZE, row * TILE_SIZE);
-      break;
-    case OBSTACLE:
-      image(obstacle, col * TILE_SIZE, row * TILE_SIZE);
-      break;
-    case SEARCHED:
+    case BACKGROUND -> image(background, col * TILE_SIZE, row * TILE_SIZE);
+    case OBSTACLE -> image(obstacle, col * TILE_SIZE, row * TILE_SIZE);
+    case SEARCHED -> {
       fill(0, 128);
-      rect(col * TILE_SIZE + TILE_SIZE / 4, row * TILE_SIZE + TILE_SIZE / 4, TILE_SIZE / 2, TILE_SIZE / 2);
-      break;
-    case GOAL:
-      image(goal, col * TILE_SIZE, row * TILE_SIZE);
-      break;
+      rect(col * TILE_SIZE + (float) TILE_SIZE / 4, row * TILE_SIZE + (float) TILE_SIZE / 4, (float) TILE_SIZE / 2, (float) TILE_SIZE
+              / 2);
+    }
+    case GOAL -> image(goal, col * TILE_SIZE, row * TILE_SIZE);
     }
   }
 
-  public static void main(String args[]) {
-    PApplet.main("Lab7.PathingMain");
+  public static void main(String[] args) {
+    PApplet.main("PathingMain");
   }
 
   public void keyPressed() {

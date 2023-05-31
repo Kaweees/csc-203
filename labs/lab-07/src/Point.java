@@ -1,4 +1,3 @@
-package Lab7;
 public class Point {
   public final int x;
   public final int y;
