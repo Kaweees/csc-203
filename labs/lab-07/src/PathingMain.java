@@ -1,8 +1,9 @@
 package Lab7;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -145,137 +146,47 @@ public class PathingMain extends PApplet {
       // clear out prior path
       path.clear();
       // example - replace with dfs
-      moveOnce(wPos, grid, path);
+      moveDFS(wPos, grid, path);
     } else if (key == 'p') {
       drawPath ^= true;
       redraw();
     }
   }
 
-  /*
-   * replace the below with a depth first search this code provided only as an
-   * example of moving in in one direction for one tile - it mostly is for
-   * illustrating how you might test the occupancy grid and add nodes to path!
-   */
-  private boolean moveOnce(Lab7.Point pos, GridValues[][] grid, List<Point> path) {
-    try {
-      Thread.sleep(200);
-    } catch (Exception e) {
-    }
-    redraw();
+  private boolean moveDFS(Point pos, GridValues[][] grid, List<Point> path) {
 
-    Point rightN = new Point(pos.x + 1, pos.y);
-    Point leftN = new Point(pos.x - 1, pos.y);
+    // check if my right neighbor is the goal
+    if (grid[pos.y][pos.x] == GridValues.GOAL) {
+      path.add(0, pos);
+      return true;
+    }
+    grid[pos.y][pos.x] = GridValues.SEARCHED;
+
     Point upN = new Point(pos.x, pos.y - 1);
     Point downN = new Point(pos.x, pos.y + 1);
+    Point leftN = new Point(pos.x - 1, pos.y);
+    Point rightN = new Point(pos.x + 1, pos.y);
+
     ArrayList<Point> neighbors = new ArrayList<Point>();
     neighbors.add(rightN);
     neighbors.add(downN);
     neighbors.add(leftN);
     neighbors.add(upN);
-//     check if current node is the goal
-    if (grid[pos.y][pos.x] == GridValues.GOAL) {
-      path.add(0, pos);
-      return true;
-    }
 
-    // set this value as searched
-    grid[pos.y][pos.x] = GridValues.SEARCHED;
-
-    System.out.printf("(%d, %d) : %s\n", pos.x, pos.y, grid[pos.y][pos.x]);
-
+    boolean foundGoal = false;
     for (Point node : neighbors) {
-      // check if node is a valid grid cell and not an obstacle
-      if (withinBounds(node, grid) && grid[node.y][node.x] != GridValues.OBSTACLE
+      // check node is a valid grid cell, hasn't been searched, and isn't an
+      // obstacle
+      if (!foundGoal && withinBounds(node, grid) && grid[node.y][node.x] != GridValues.OBSTACLE
           && grid[node.y][node.x] != GridValues.SEARCHED) {
-        // check if current node is the goal
-        if (moveOnce(node, grid, path)) {
+        if (moveDFS(node, grid, path)) {
           path.add(0, node);
-
+          return true;
         }
       }
     }
     return false;
   }
-
-  // if (!found && withinBounds(leftN, grid) && grid[leftN.y][leftN.x] !=
-  // GridValues.OBSTACLE
-  // && grid[leftN.y][leftN.x] != GridValues.SEARCHED) {
-  // found = findDFS(leftN, grid, path);
-  // }
-  // if (!found && withinBounds(upN, grid) && grid[upN.y][upN.x] !=
-  // GridValues.OBSTACLE
-  // && grid[upN.y][upN.x] != GridValues.SEARCHED) {
-  // found = findDFS(upN, grid, path);
-  // }
-  // if (!found && withinBounds(downN, grid) && grid[downN.y][downN.x] !=
-  // GridValues.OBSTACLE
-  // && grid[downN.y][downN.x] != GridValues.SEARCHED) {
-  // found = findDFS(downN, grid, path);
-  // }
-  // if (found) {
-  // path.add(0, pos);
-  // }
-  // }
-  // return found;
-  // }
-  // Point[] neighbors = new Point[4];
-  // neighbors[0] = new Point(pos.x + 1, pos.y); // right neighbor
-  // neighbors[1] = new Point(pos.x - 1, pos.y); // left neighbor
-  // neighbors[2] = new Point(pos.x, pos.y - 1); // up neighbor
-  // neighbors[3] = new Point(pos.x, pos.y + 1); // down neighbor
-  // // test if this is a valid grid cell
-  // for (Point node : neighbors) {
-  // if (withinBounds(node, grid) && grid[node.y][node.x] != GridValues.OBSTACLE
-  // && grid[node.y][node.x] != GridValues.SEARCHED) {
-  // // check if neighbor is the goal
-  // if (grid[node.y][node.x] == GridValues.GOAL) {
-  // path.add(0, node);
-  // return true;
-  // } else {
-  // // set neighbor as searched
-  // grid[node.y][node.x] = GridValues.SEARCHED;
-  //
-  // }
-  // }
-  // }
-
-  // private int findDFS(GridValues[][] grid, int row, int col, List<Point>
-  // path) {
-  // // check if this is a valid grid cell
-  // if (withinBounds(new Point(col, row), grid) && grid[row][col] !=
-  // GridValues.OBSTACLE
-  // && grid[row][col] != GridValues.SEARCHED) {
-  // // check if my right neighbor is the goal
-  // if (grid[row][col] == GridValues.GOAL) {
-  // path.add(0, new Point(col, row));
-  // return true;
-  // }
-  // // set this value as searched
-  // grid[row][col] = GridValues.SEARCHED;
-  // // check if I can move right
-  // if (findDFS(row, col + 1, grid, path)) {
-  // path.add(0, new Point(col, row));
-  // return true;
-  // }
-  // // check if I can move down
-  // if (findDFS(row + 1, col, grid, path)) {
-  // path.add(0, new Point(col, row));
-  // return true;
-  // }
-  // // check if I can move left
-  // if (findDFS(row, col - 1, grid, path)) {
-  // path.add(0, new Point(col, row));
-  // return true;
-  // }
-  // // check if I can move up
-  // if (findDFS(row - 1, col, grid, path)) {
-  // path.add(0, new Point(col, row));
-  // return true;
-  // }
-  // }
-  // return false;
-  // }
 
   private static boolean withinBounds(Point p, GridValues[][] grid) {
     return p.y >= 0 && p.y < grid.length && p.x >= 0 && p.x < grid[0].length;
