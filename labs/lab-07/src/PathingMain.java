@@ -22,9 +22,9 @@ public class PathingMain extends PApplet {
   private static final int ROWS = 15;
   private static final int COLS = 20;
 
-  private static enum GridValues {
+  private enum GridValues {
     BACKGROUND, OBSTACLE, GOAL, SEARCHED
-  };
+  }
 
   private Point wPos;
 
@@ -37,7 +37,7 @@ public class PathingMain extends PApplet {
   /* runs once to set up world */
   public void setup() {
 
-    path = new LinkedList<Point>();
+    path = new LinkedList<>();
     wPos = new Point(2, 2);
     images = new ArrayList<>();
     images.add(loadImage("images/wyvern1.bmp"));
@@ -159,7 +159,7 @@ public class PathingMain extends PApplet {
     Point leftN = new Point(pos.x - 1, pos.y);
     Point rightN = new Point(pos.x + 1, pos.y);
 
-    ArrayList<Point> neighbors = new ArrayList<Point>();
+    ArrayList<Point> neighbors = new ArrayList<>();
     neighbors.add(rightN);
     neighbors.add(downN);
     neighbors.add(leftN);
