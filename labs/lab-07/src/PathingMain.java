@@ -173,11 +173,10 @@ public class PathingMain extends PApplet {
     neighbors.add(leftN);
     neighbors.add(upN);
 
-    boolean foundGoal = false;
     for (Point node : neighbors) {
       // check node is a valid grid cell, hasn't been searched, and isn't an
       // obstacle
-      if (!foundGoal && withinBounds(node, grid) && grid[node.y][node.x] != GridValues.OBSTACLE
+      if (withinBounds(node, grid) && grid[node.y][node.x] != GridValues.OBSTACLE
           && grid[node.y][node.x] != GridValues.SEARCHED) {
         if (moveDFS(node, grid, path)) {
           path.add(0, node);
