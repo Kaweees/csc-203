@@ -83,9 +83,10 @@ public final class WorldModel {
 
   public void parseDude(String[] properties, Point pt, String id, ImageStore imageStore) {
     if (properties.length == DUDE_NUM_PROPERTIES) {
+      SingleStepPathingStrategy strategy = new SingleStepPathingStrategy();
       Entity entity = new WorldModel().createDudeNotFull(id, pt, Double.parseDouble(properties[DUDE_ACTION_PERIOD]),
           Double.parseDouble(properties[DUDE_ANIMATION_PERIOD]), Integer.parseInt(properties[DUDE_LIMIT]),
-          imageStore.getImageList(DUDE_KEY));
+          imageStore.getImageList(DUDE_KEY), strategy);
       tryAddEntity(entity);
     } else {
       throw new IllegalArgumentException(
@@ -95,8 +96,9 @@ public final class WorldModel {
 
   public void parseFairy(String[] properties, Point pt, String id, ImageStore imageStore) {
     if (properties.length == FAIRY_NUM_PROPERTIES) {
+      SingleStepPathingStrategy strategy = new SingleStepPathingStrategy();
       Entity entity = new WorldModel().createFairy(id, pt, Double.parseDouble(properties[FAIRY_ACTION_PERIOD]),
-          Double.parseDouble(properties[FAIRY_ANIMATION_PERIOD]), imageStore.getImageList(FAIRY_KEY));
+          Double.parseDouble(properties[FAIRY_ANIMATION_PERIOD]), imageStore.getImageList(FAIRY_KEY), strategy);
       tryAddEntity(entity);
     } else {
       throw new IllegalArgumentException(
@@ -350,20 +352,20 @@ public final class WorldModel {
   }
 
   public Entity createFairy(String id, Point position, double actionPeriod, double animationPeriod,
-      List<PImage> images) {
-    return new Fairy(id, position, images, animationPeriod, actionPeriod);
+      List<PImage> images, PathingStrategy strategy) {
+    return new Fairy(id, position, images, animationPeriod, actionPeriod, strategy);
   }
 
   // need resource count, though it always starts at 0
   public Entity createDudeNotFull(String id, Point position, double actionPeriod, double animationPeriod,
-      int resourceLimit, List<PImage> images) {
-    return new Dude(id, position, images, resourceLimit, 0, animationPeriod, actionPeriod, false);
+      int resourceLimit, List<PImage> images, PathingStrategy strategy) {
+    return new Dude(id, position, images, resourceLimit, 0, animationPeriod, actionPeriod, false, strategy);
   }
 
   // don't technically need resource count ... full
   public Entity createDudeFull(String id, Point position, double actionPeriod, double animationPeriod,
-      int resourceLimit, List<PImage> images) {
-    return new Dude(id, position, images, resourceLimit, 0, animationPeriod, actionPeriod, true);
+      int resourceLimit, List<PImage> images, PathingStrategy strategy) {
+    return new Dude(id, position, images, resourceLimit, 0, animationPeriod, actionPeriod, true, strategy);
   }
 
   public Optional<Entity> nearestEntity(List<Entity> entities, Point pos) {

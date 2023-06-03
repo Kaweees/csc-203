@@ -2,20 +2,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import processing.core.PImage;
 
 public class Dude extends hasActions implements canMove, canTransform {
-  private int resourceLimit;
+  private final int resourceLimit;
   private int resourceCount;
-  private boolean dudeFull;
+  private final boolean dudeFull;
+  private final PathingStrategy strategy;
 
-  Dude(String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double animationPeriod,
-      double actionPeriod, boolean dudeFull) {
+  public Dude(String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double animationPeriod,
+      double actionPeriod, boolean dudeFull, PathingStrategy pStrategy) {
     super(id, position, images, animationPeriod, actionPeriod);
     this.dudeFull = dudeFull;
     this.resourceLimit = resourceLimit;
     this.resourceCount = resourceCount;
+    this.strategy = pStrategy;
   }
 
   public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
@@ -71,19 +78,13 @@ public class Dude extends hasActions implements canMove, canTransform {
   }
 
   public Point nextPosition(WorldModel world, Point destPos) {
-    int horiz = Integer.signum(destPos.x - getPosition().x);
-    Point newPos = new Point(getPosition().x + horiz, getPosition().y);
-
-    if (horiz == 0 || world.isOccupied(newPos) && world.getOccupancyCell(newPos).getClass() != Stump.class) {
-      int vert = Integer.signum(destPos.y - getPosition().y);
-      newPos = new Point(getPosition().x, getPosition().y + vert);
-
-      if (vert == 0 || world.isOccupied(newPos) && world.getOccupancyCell(newPos).getClass() != Stump.class) {
-        newPos = getPosition();
-      }
+    List<Point> path = strategy.computePath(getPosition(), destPos, p -> !world.isOccupied(p), this::adjacent,
+        PathingStrategy.CARDINAL_NEIGHBORS);
+    if (path.isEmpty()) {
+      return getPosition();
+    } else {
+      return path.get(0);
     }
-
-    return newPos;
   }
 
   public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
@@ -93,8 +94,9 @@ public class Dude extends hasActions implements canMove, canTransform {
 
   public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
     if (dudeFull) {
+
       Entity dude = new WorldModel().createDudeNotFull(getId(), getPosition(), getActionPeriod(), getAnimationPeriod(),
-          resourceLimit, getImages());
+          resourceLimit, getImages(), this.getStrategy());
 
       world.removeEntity(scheduler, this);
 
@@ -104,7 +106,7 @@ public class Dude extends hasActions implements canMove, canTransform {
     } else {
       if (resourceCount >= resourceLimit) {
         Entity dude = new WorldModel().createDudeFull(getId(), getPosition(), getActionPeriod(), getAnimationPeriod(),
-            resourceLimit, getImages());
+            resourceLimit, getImages(), this.getStrategy());
 
         world.removeEntity(scheduler, this);
         scheduler.unscheduleAllEvents(this);
@@ -117,5 +119,9 @@ public class Dude extends hasActions implements canMove, canTransform {
 
       return false;
     }
+  }
+
+  private PathingStrategy getStrategy() {
+    return this.strategy;
   }
 }

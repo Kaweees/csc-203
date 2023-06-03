@@ -1,13 +1,20 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import processing.core.PImage;
 
 public class Fairy extends hasActions implements canMove {
+  private final PathingStrategy strategy;
 
-  Fairy(String id, Point position, List<PImage> images, double animationPeriod, double actionPeriod) {
+  public Fairy(String id, Point position, List<PImage> images, double animationPeriod, double actionPeriod, PathingStrategy pStrategy) {
     super(id, position, images, animationPeriod, actionPeriod);
+    this.strategy = pStrategy;
   }
 
   public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
@@ -30,19 +37,13 @@ public class Fairy extends hasActions implements canMove {
   }
 
   public Point nextPosition(WorldModel world, Point destPos) {
-    int horiz = Integer.signum(destPos.x - getPosition().x);
-    Point newPos = new Point(getPosition().x + horiz, getPosition().y);
-
-    if (horiz == 0 || world.isOccupied(newPos)) {
-      int vert = Integer.signum(destPos.y - getPosition().y);
-      newPos = new Point(getPosition().x, getPosition().y + vert);
-
-      if (vert == 0 || world.isOccupied(newPos)) {
-        newPos = getPosition();
-      }
+    List<Point> path = strategy.computePath(getPosition(), destPos, p -> !world.isOccupied(p), this::adjacent,
+            PathingStrategy.CARDINAL_NEIGHBORS);
+    if (path.isEmpty()) {
+      return getPosition();
+    } else {
+      return path.get(0);
     }
-
-    return newPos;
   }
 
   public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
