@@ -1,4 +1,7 @@
-final class Point {
+/**
+ * A simple class representing a location in 2D space.
+ */
+public final class Point {
   public final int x;
   public final int y;
 

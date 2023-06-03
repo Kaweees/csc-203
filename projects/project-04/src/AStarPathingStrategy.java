@@ -16,9 +16,6 @@ class AStarPathingStrategy implements PathingStrategy {
      * neighbors are beside the target set the g, h, f values add them to open
      * list if not in open list add the selected node to close list return path
      */
-    List<Point> closedList = new LinkedList<>();
-    List<Point> openList = new LinkedList<>();
-    openList.add(start);
-
+    return path;
   }
 }
