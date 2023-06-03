@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="fbbfb0e2-e747-41d0-880f-a36c406dcaac" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-04.iml" beforeDir="false" afterPath="$PROJECT_DIR$/project-04.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AStarPathingStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AStarPathingStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Point.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Icon_" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/grass.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/vein.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/water.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/wyvern1.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/wyvern2.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/wyvern3.bmp" beforeDir="false" />
-    </list>
+    <list default="true" id="fbbfb0e2-e747-41d0-880f-a36c406dcaac" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,6 +29,10 @@
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
     "last_opened_file_path": "/home/dwe/Documents/GitHub/csc-203/resources/processing-experimental.jar",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
@@ -53,7 +47,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1685767115896</updated>
-      <workItem from="1685767116927" duration="139000" />
+      <workItem from="1685767116927" duration="563000" />
     </task>
     <servers />
   </component>
