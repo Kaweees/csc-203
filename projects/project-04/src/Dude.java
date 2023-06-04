@@ -2,11 +2,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import processing.core.PImage;
 
@@ -16,8 +11,8 @@ public class Dude extends hasActions implements canMove, canTransform {
   private final boolean dudeFull;
   private final PathingStrategy strategy;
 
-  public Dude(String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double animationPeriod,
-      double actionPeriod, boolean dudeFull, PathingStrategy pStrategy) {
+  public Dude(String id, Point position, List<PImage> images, int resourceLimit, int resourceCount,
+      double animationPeriod, double actionPeriod, boolean dudeFull, PathingStrategy pStrategy) {
     super(id, position, images, animationPeriod, actionPeriod);
     this.dudeFull = dudeFull;
     this.resourceLimit = resourceLimit;
@@ -78,8 +73,8 @@ public class Dude extends hasActions implements canMove, canTransform {
   }
 
   public Point nextPosition(WorldModel world, Point destPos) {
-    List<Point> path = strategy.computePath(getPosition(), destPos, p -> !world.isOccupied(p), this::adjacent,
-        PathingStrategy.CARDINAL_NEIGHBORS);
+    List<Point> path = strategy.computePath(getPosition(), destPos, p -> !world.isOccupied(p) && world.withinBounds(p),
+        this::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
     if (path.isEmpty()) {
       return getPosition();
     } else {

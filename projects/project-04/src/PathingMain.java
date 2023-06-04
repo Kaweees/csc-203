@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
@@ -13,7 +14,7 @@ public class PathingMain extends PApplet {
   private PImage obstacle;
   private PImage goal;
   private List<Point> path;
-  private PathingStrategy strategy = new SingleStepPathingStrategy();
+  private PathingStrategy strategy = new AStarPathingStrategy();
   // private PathingStrategy strategy = new AStarPathingStrategy();
 
   private static final int TILE_SIZE = 32;
@@ -24,7 +25,7 @@ public class PathingMain extends PApplet {
 
   private static enum GridValues {
     BACKGROUND, OBSTACLE, GOAL
-  };
+  }
 
   private Point wPos;
   private Point goalPos;
@@ -51,10 +52,8 @@ public class PathingMain extends PApplet {
   }
 
   private static void initialize_grid(GridValues[][] grid) {
-    for (int row = 0; row < grid.length; row++) {
-      for (int col = 0; col < grid[row].length; col++) {
-        grid[row][col] = GridValues.BACKGROUND;
-      }
+    for (GridValues[] gridValues : grid) {
+      Arrays.fill(gridValues, GridValues.BACKGROUND);
     }
 
     for (int row = 2; row < 8; row++) {
@@ -94,25 +93,20 @@ public class PathingMain extends PApplet {
       else
         fill(0);
 
-      rect(p.x * TILE_SIZE + TILE_SIZE * 3 / 8, p.y * TILE_SIZE + TILE_SIZE * 3 / 8, TILE_SIZE / 4, TILE_SIZE / 4);
+      rect(p.x * TILE_SIZE + (float) (TILE_SIZE * 3) / 8, p.y * TILE_SIZE + (float) (TILE_SIZE * 3) / 8, (float) TILE_SIZE
+              / 4, (float) TILE_SIZE / 4);
     }
   }
 
   private void draw_tile(int row, int col) {
     switch (grid[row][col]) {
-    case BACKGROUND:
-      image(background, col * TILE_SIZE, row * TILE_SIZE);
-      break;
-    case OBSTACLE:
-      image(obstacle, col * TILE_SIZE, row * TILE_SIZE);
-      break;
-    case GOAL:
-      image(goal, col * TILE_SIZE, row * TILE_SIZE);
-      break;
+    case BACKGROUND -> image(background, col * TILE_SIZE, row * TILE_SIZE);
+    case OBSTACLE -> image(obstacle, col * TILE_SIZE, row * TILE_SIZE);
+    case GOAL -> image(goal, col * TILE_SIZE, row * TILE_SIZE);
     }
   }
 
-  public static void main(String args[]) {
+  public static void main(String[] args) {
     PApplet.main("PathingMain");
   }
 
@@ -145,7 +139,7 @@ public class PathingMain extends PApplet {
 
     while (!neighbors(pos, goal)) {
       points = strategy.computePath(pos, goalPos, p -> withinBounds(p, grid) && grid[p.y][p.x] != GridValues.OBSTACLE,
-          (p1, p2) -> neighbors(p1, p2), PathingStrategy.CARDINAL_NEIGHBORS);
+              PathingMain::neighbors, PathingStrategy.CARDINAL_NEIGHBORS);
       // DIAGONAL_NEIGHBORS);
       // DIAGONAL_CARDINAL_NEIGHBORS);
 

@@ -83,7 +83,7 @@ public final class WorldModel {
 
   public void parseDude(String[] properties, Point pt, String id, ImageStore imageStore) {
     if (properties.length == DUDE_NUM_PROPERTIES) {
-      SingleStepPathingStrategy strategy = new SingleStepPathingStrategy();
+      AStarPathingStrategy strategy = new AStarPathingStrategy();
       Entity entity = new WorldModel().createDudeNotFull(id, pt, Double.parseDouble(properties[DUDE_ACTION_PERIOD]),
           Double.parseDouble(properties[DUDE_ANIMATION_PERIOD]), Integer.parseInt(properties[DUDE_LIMIT]),
           imageStore.getImageList(DUDE_KEY), strategy);
@@ -96,7 +96,7 @@ public final class WorldModel {
 
   public void parseFairy(String[] properties, Point pt, String id, ImageStore imageStore) {
     if (properties.length == FAIRY_NUM_PROPERTIES) {
-      SingleStepPathingStrategy strategy = new SingleStepPathingStrategy();
+      AStarPathingStrategy strategy = new AStarPathingStrategy();
       Entity entity = new WorldModel().createFairy(id, pt, Double.parseDouble(properties[FAIRY_ACTION_PERIOD]),
           Double.parseDouble(properties[FAIRY_ANIMATION_PERIOD]), imageStore.getImageList(FAIRY_KEY), strategy);
       tryAddEntity(entity);
@@ -351,8 +351,8 @@ public final class WorldModel {
         SAPLING_HEALTH_LIMIT);
   }
 
-  public Entity createFairy(String id, Point position, double actionPeriod, double animationPeriod,
-      List<PImage> images, PathingStrategy strategy) {
+  public Entity createFairy(String id, Point position, double actionPeriod, double animationPeriod, List<PImage> images,
+      PathingStrategy strategy) {
     return new Fairy(id, position, images, animationPeriod, actionPeriod, strategy);
   }
 

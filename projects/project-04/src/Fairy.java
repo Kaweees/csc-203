@@ -1,18 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import processing.core.PImage;
 
 public class Fairy extends hasActions implements canMove {
   private final PathingStrategy strategy;
 
-  public Fairy(String id, Point position, List<PImage> images, double animationPeriod, double actionPeriod, PathingStrategy pStrategy) {
+  public Fairy(String id, Point position, List<PImage> images, double animationPeriod, double actionPeriod,
+      PathingStrategy pStrategy) {
     super(id, position, images, animationPeriod, actionPeriod);
     this.strategy = pStrategy;
   }
@@ -37,8 +33,8 @@ public class Fairy extends hasActions implements canMove {
   }
 
   public Point nextPosition(WorldModel world, Point destPos) {
-    List<Point> path = strategy.computePath(getPosition(), destPos, p -> !world.isOccupied(p), this::adjacent,
-            PathingStrategy.CARDINAL_NEIGHBORS);
+    List<Point> path = strategy.computePath(getPosition(), destPos, p -> !world.isOccupied(p) && world.withinBounds(p),
+        this::adjacent, PathingStrategy.CARDINAL_NEIGHBORS);
     if (path.isEmpty()) {
       return getPosition();
     } else {
