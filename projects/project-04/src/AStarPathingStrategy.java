@@ -43,7 +43,7 @@ class AStarPathingStrategy implements PathingStrategy {
       }
       if (bestNeighbor != null) {
         // Update the path with the best neighbor found
-        path.add(0, bestNeighbor);
+        path.add(bestNeighbor);
       }
     }
     return path; // Return the complete path
