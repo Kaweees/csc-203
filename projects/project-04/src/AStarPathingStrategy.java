@@ -6,12 +6,14 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 class AStarPathingStrategy implements PathingStrategy {
+
   public List<Point> computePath(Point start, Point end, Predicate<Point> canPassThrough,
       BiPredicate<Point, Point> withinReach, Function<Point, Stream<Point>> potentialNeighbors) {
     List<Point> path = new LinkedList<>();
     List<Point> closedList = new LinkedList<>();
     List<Point> openList = new LinkedList<>();
     openList.add(start);
+
     while (!openList.isEmpty()) {
       Point current = openList.get(0);
       // set current to point with lowest f value
@@ -29,19 +31,20 @@ class AStarPathingStrategy implements PathingStrategy {
       }
       List<Point> neighbors = potentialNeighbors.apply(current).filter(canPassThrough)
           .filter(p -> !closedList.contains(p)).toList();
+      Point bestNeighbor = null;
       for (Point p : neighbors) {
-        // if child is in open list and has lower f value, swap
-        if (openList.contains(p) && calcF(p, start, end) < calcF(current, start, end)) {
-          openList.remove(p);
-          openList.add(p);
+        if (bestNeighbor == null || calcF(p, start, end) < calcF(bestNeighbor, start, end)) {
+          bestNeighbor = p;
         }
         // if child is not in open list, add to open list
         if (!openList.contains(p)) {
           openList.add(p);
         }
       }
-      // Update the path with the current point
-       path.add(0,current);
+      if (bestNeighbor != null) {
+        // Update the path with the best neighbor found
+        path.add(0, bestNeighbor);
+      }
     }
     return path; // Return the complete path
   }
