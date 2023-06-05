@@ -14,7 +14,7 @@ public class PathingMain extends PApplet {
   private PImage obstacle;
   private PImage goal;
   private List<Point> path;
-  private PathingStrategy strategy = new AStarPathingStrategy();
+  private final PathingStrategy strategy = new AStarPathingStrategy();
   // private PathingStrategy strategy = new AStarPathingStrategy();
 
   private static final int TILE_SIZE = 32;
@@ -23,7 +23,7 @@ public class PathingMain extends PApplet {
   private static final int ROWS = 15;
   private static final int COLS = 20;
 
-  private static enum GridValues {
+  private enum GridValues {
     BACKGROUND, OBSTACLE, GOAL
   }
 

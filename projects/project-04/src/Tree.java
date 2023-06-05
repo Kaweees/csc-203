@@ -4,7 +4,7 @@ import processing.core.PImage;
 
 public class Tree extends hasActions implements canTransform {
   private int health;
-  private int healthLimit;
+  private final int healthLimit;
 
   Tree(String id, Point position, List<PImage> images, double animationPeriod, double actionPeriod, int health,
       int healthLimit) {

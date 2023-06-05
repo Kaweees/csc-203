@@ -10,7 +10,7 @@ public class Sapling extends hasActions implements canTransform {
   private static final int TREE_HEALTH_MAX = 3;
   private static final int TREE_HEALTH_MIN = 1;
   private int health;
-  private int healthLimit;
+  private final int healthLimit;
 
   Sapling(String id, Point position, List<PImage> images, double animationPeriod, double actionPeriod, int health,
       int healthLimit) {

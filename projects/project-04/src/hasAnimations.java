@@ -3,7 +3,7 @@ import java.util.List;
 import processing.core.PImage;
 
 public abstract class hasAnimations extends Entity {
-  private double animationPeriod;
+  private final double animationPeriod;
 
   hasAnimations(String id, Point position, List<PImage> images, double animationPeriod) {
     super(id, position, images);
