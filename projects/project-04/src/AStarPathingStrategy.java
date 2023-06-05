@@ -1,63 +1,85 @@
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 class AStarPathingStrategy implements PathingStrategy {
 
+  public static class Node implements Comparable<Node> {
+    private Point point;
+    private Node prev;
+    private int g;
+    private int h;
+    private int f;
+
+    public Node(Point point, Node prev, int g, int h) {
+      this.point = point;
+      this.prev = prev;
+      this.g = g;
+      this.h = h;
+      this.f = g + h;
+    }
+
+    public Point getPoint() {
+      return point;
+    }
+
+    public Node getPrev() {
+      return prev;
+    }
+
+    public int getG() {
+      return g;
+    }
+
+    public int getH() {
+      return h;
+    }
+
+    public int getF() {
+      return f;
+    }
+
+    public int compareTo(Node other) {
+      return Integer.compare(this.f, other.f);
+    }
+  }
+
   public List<Point> computePath(Point start, Point end, Predicate<Point> canPassThrough,
       BiPredicate<Point, Point> withinReach, Function<Point, Stream<Point>> potentialNeighbors) {
-    List<Point> path = new LinkedList<>();
-    List<Point> closedList = new LinkedList<>();
-    List<Point> openList = new LinkedList<>();
-    openList.add(start);
+    List<Point> path = new LinkedList<Point>();
+
+    HashMap<Point, Node> closedList = new HashMap<Point, Node>();
+    PriorityQueue<Node> openList = new PriorityQueue<Node>();
+
+    Node startNode = new Node(start, null, 0, Math.abs(start.x - end.x) + Math.abs(start.y - end.y));
+    openList.add(startNode);
 
     while (!openList.isEmpty()) {
-      Point current = openList.get(0);
-      // set current to point with lowest f value
-      for (Point p : openList) {
-        if (calcF(p, start, end) < calcF(current, start, end)) {
-          current = p;
+      Node cur = openList.poll();
+      if (withinReach.test(cur.getPoint(), end)) {
+        while (cur.getPrev() != null) {
+          path.add(0, cur.getPoint());
+          cur = cur.getPrev();
         }
-      }
-      openList.remove(current);
-      closedList.add(current);
-      System.out.println(current);
-      if (withinReach.test(current, end)) {
-        path.add(current);
-        return path; // Found the goal, return the complete path
-      }
-      List<Point> neighbors = potentialNeighbors.apply(current).filter(canPassThrough)
-          .filter(p -> !closedList.contains(p)).toList();
-      Point bestNeighbor = null;
-      for (Point p : neighbors) {
-        if (bestNeighbor == null || calcF(p, start, end) < calcF(bestNeighbor, start, end)) {
-          bestNeighbor = p;
+        break;
+      } else {
+        List<Point> neighbors = potentialNeighbors.apply(cur.getPoint()).collect(Collectors.toList());
+        for (Point p : neighbors) {
+          if (canPassThrough.test(p) && !closedList.containsKey(p)) {
+            Node newNode = new Node(p, cur, cur.getG() + 1, Math.abs(p.x - end.x) + Math.abs(p.y - end.y));
+            openList.add(newNode);
+          }
         }
-        // if child is not in open list, add to open list
-        if (!openList.contains(p)) {
-          openList.add(p);
-        }
-      }
-      if (bestNeighbor != null) {
-        // Update the path with the best neighbor found
-        path.add(bestNeighbor);
+        closedList.put(cur.getPoint(), cur);
       }
     }
-    return path; // Return the complete path
-  }
 
-  private double calcF(Point cur, Point start, Point end) {
-    return calcG(cur, start) + calcH(cur, end);
-  }
-
-  private double calcG(Point cur, Point start) {
-    return Math.sqrt(Math.pow(cur.x - start.x, 2) + Math.pow(cur.y - start.y, 2));
-  }
-
-  private double calcH(Point cur, Point end) {
-    return Math.sqrt(Math.pow(cur.x - end.x, 2) + Math.pow(cur.y - end.y, 2));
+    return path;
   }
 }
