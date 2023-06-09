@@ -1,6 +1,5 @@
 /**
- * A simple class representing a location in 2D space.
- */
+ * A simple class representing a location in 2D space.*/
 public final class Point {
   public final double x;
   public final double y;

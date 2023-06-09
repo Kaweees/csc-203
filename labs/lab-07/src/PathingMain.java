@@ -72,11 +72,19 @@ public class PathingMain extends PApplet {
       grid[row][19 - row] = GridValues.OBSTACLE;
     }
 
+    for (int row = 2; row < 9; row++) {
+      grid[row][7 ] = GridValues.OBSTACLE;
+    }
+
     for (int col = 1; col < 8; col++) {
       grid[11][col] = GridValues.OBSTACLE;
     }
 
-    grid[13][14] = GridValues.GOAL;
+    for (int col = 3; col < 9; col++) {
+      grid[3][col] = GridValues.OBSTACLE;
+    }
+
+    grid[8][17] = GridValues.GOAL;
   }
 
   private void next_image() {
