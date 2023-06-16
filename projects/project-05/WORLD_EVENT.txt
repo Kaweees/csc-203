@@ -1,0 +1,4 @@
+1. The dammed have returned to reap the souls of the most pure to corrupt the world and harvest humanity once and for all. This is triggered by clicking the mouse in the world
+2. Upon clicking the world, a grave is summoned to the point of click, assuming it is already not occupied by an entity and is on a grass tile
+3. On creation, if a dude walks near a grave, it is transformed into a zombie
+4. The entities will chase Faries and transform them into stumps
